@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # hospital
 
 A new Flutter project.
@@ -20,6 +21,9 @@ samples, guidance on mobile development, and a full API reference.
 =======
 >>>>>>> c380281acc2d583b60adc4fdf06ede6f8991b207
 # HCI_APP
+=======
+# HCI
+>>>>>>> 5964324a3356a86a28c399368a80c770cfb9096b
 
 
 
@@ -36,14 +40,22 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
+<<<<<<< HEAD
 git remote add origin https://code.fbi.h-da.de/stabstito/hci_app.git
+=======
+git remote add origin https://code.fbi.h-da.de/stabstito/hci.git
+>>>>>>> 5964324a3356a86a28c399368a80c770cfb9096b
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
+<<<<<<< HEAD
 - [ ] [Set up project integrations](https://code.fbi.h-da.de/stabstito/hci_app/-/settings/integrations)
+=======
+- [ ] [Set up project integrations](https://code.fbi.h-da.de/stabstito/hci/-/settings/integrations)
+>>>>>>> 5964324a3356a86a28c399368a80c770cfb9096b
 
 ## Collaborate with your team
 
@@ -113,6 +125,9 @@ For open source projects, say how it is licensed.
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> e1b76bc9fb165fb1ce39d17ac11457ad0d511389
 =======
 >>>>>>> c380281acc2d583b60adc4fdf06ede6f8991b207
+=======
+>>>>>>> 5964324a3356a86a28c399368a80c770cfb9096b
