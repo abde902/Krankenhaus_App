@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'patient.dart';
 import 'package:intl/intl.dart';
-import 'daten_patient.dart';
+import 'patient.dart';
+import 'daten_patient.dart'; // Stellen Sie sicher, dass diese Datei alle benötigten Informationen enthält.
 
 class AdminDashboard extends StatefulWidget {
   @override
@@ -22,16 +22,29 @@ class _AdminDashboardState extends State<AdminDashboard> {
         itemCount: daten.zimmerListe.length,
         itemBuilder: (context, index) {
           final zimmer = daten.zimmerListe[index];
+          // Finde den Patienten im Zimmer
+          Patient? patientImZimmer = zimmer.istBelegt ? 
+            daten.patientenListe.firstWhere(
+              (patient) => patient.zimmerNummer == zimmer.nummer,
+              
+            ) : null;
+
+          bool isPatientInGoodHealth = patientImZimmer?.aktuellerGesundheitszustand ?? false;
+
           return Card(
+            color: isPatientInGoodHealth ? Colors.green[100] : null, // Grüner Hintergrund für gute Gesundheit
             elevation: 4.0,
             margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
             child: ListTile(
               title: Text('Zimmer ${zimmer.nummer}'),
               subtitle: Text(zimmer.istBelegt ? 'Belegt' : 'Frei'),
               leading: Icon(
-                zimmer.istBelegt ? Icons.person : Icons.hotel,
-                color: zimmer.istBelegt ? const Color.fromARGB(255, 86, 54, 244) : Colors.green,
+                Icons.hotel, // Icon für das Zimmer
+                color: zimmer.istBelegt ? (isPatientInGoodHealth ? Colors.green : const Color.fromARGB(255, 86, 54, 244)) : Colors.grey,
               ),
+              trailing: zimmer.istBelegt && isPatientInGoodHealth
+                ? Icon(Icons.check_circle, color: Colors.green)  // Grünes Symbol für guten Gesundheitszustand
+                : null,
             onTap: () {
   if (zimmer.istBelegt) {
     Patient? patientImZimmer = daten.patientenListe.firstWhere(
@@ -58,7 +71,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     builder: (BuildContext context) {
       TextEditingController nameController = TextEditingController();
       TextEditingController geburtsdatumController = TextEditingController();
-      TextEditingController gesundheitszustandController = TextEditingController();
+      
 
       return AlertDialog(
         title: Text('Patient Aufnehmen'),
@@ -73,10 +86,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 controller: geburtsdatumController,
                 decoration: InputDecoration(hintText: "Geburtsdatum (JJJJ-MM-TT)"),
               ),
-              TextField(
-                controller: gesundheitszustandController,
-                decoration: InputDecoration(hintText: "Aktueller Gesundheitszustand"),
-              ),
+              
             ],
           ),
         ),
@@ -89,7 +99,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 id: neueId,
                 name: nameController.text,
                 geburtsdatum: DateTime.parse(geburtsdatumController.text),
-                aktuellerGesundheitszustand: gesundheitszustandController.text,
+                aktuellerGesundheitszustand: false,
                 zimmerNummer: zimmerNummer,
               );
               setState(() {
@@ -104,7 +114,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     },
   );
 }
-// ...
+
 
 void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
   showDialog(
@@ -127,10 +137,7 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
                 'Geburtsdatum: $formattedBirthDate',
                 style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
               ),
-              Text(
-                'Gesundheitszustand: ${patient.aktuellerGesundheitszustand}',
-                style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
-              ),
+              
               Text(
                 'Zimmer: $zimmerNummer',
                 style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
@@ -150,6 +157,8 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
               Navigator.of(context).pop(); // Dialog schließen
             },
           ),
+
+          
         ],
       );
     },
@@ -157,7 +166,7 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
 }
 
 
-// ...
+
 
 
 
