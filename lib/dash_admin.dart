@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'patient.dart';
 import 'daten_patient.dart'; // Stellen Sie sicher, dass diese Datei alle benötigten Informationen enthält.
@@ -117,6 +117,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
 
 void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
+  bool freilassen=patient.aktuellerGesundheitszustand;
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -147,6 +148,7 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
           ),
         ),
         actions: <Widget>[
+          if(freilassen)
           TextButton(
             child: Text('Freilassen'),
             onPressed: () {
@@ -157,8 +159,6 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
               Navigator.of(context).pop(); // Dialog schließen
             },
           ),
-
-          
         ],
       );
     },

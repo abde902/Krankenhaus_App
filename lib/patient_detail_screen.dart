@@ -13,10 +13,12 @@ class PatientDetailScreen extends StatefulWidget {
 
 class _PatientDetailScreenState extends State<PatientDetailScreen> {
   String diagnosis = '';
+  Key textFieldKey = UniqueKey();
 
   void _speichereDiagnose(String neueDiagnose) {
     setState(() {
       widget.patient.addDiagnosis(neueDiagnose); // Füge die neue Diagnose zur Liste hinzu
+      textFieldKey = UniqueKey();
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Diagnose wurde gespeichert.')),
@@ -79,15 +81,22 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
             // Neue Diagnose hinzufügen
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
+              key: textFieldKey,
               child: TextField(
                 onChanged: (value) {
                   diagnosis = value;
+                  
                 },
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Neue Diagnose hinzufügen',
                 ),
               ),
+            ),  SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => _speichereDiagnose(diagnosis),
+              
+              child: Text('speichern'),
             ),
              Card(
               child: ListTile(
@@ -105,11 +114,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => _speichereDiagnose(diagnosis),
-              child: Text('Diagnose speichern'),
-            ),
+          
           ],
         ),
       ),
