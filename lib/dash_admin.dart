@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'patient.dart';
+ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'daten_patient.dart';
-
+import 'patient.dart';
+import 'daten_patient.dart'; // Stellen Sie sicher, dass diese Datei alle benötigten Informationen enthält.
+import 'zimmer.dart';
+enum ZimmerStatus { frei, belegt, bereit }
 class AdminDashboard extends StatefulWidget {
   @override
   _AdminDashboardState createState() => _AdminDashboardState();
@@ -10,28 +11,66 @@ class AdminDashboard extends StatefulWidget {
 
 class _AdminDashboardState extends State<AdminDashboard> {
   final daten = DatenVerwaltung();
-
+  ZimmerStatus? _selectedFilter;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     List<Zimmer> gefilterteListe = _filterZimmer();
+
+  return Scaffold(
       appBar: AppBar(
         title: const Text('Verwaltungs-Dashboard'),
         backgroundColor: Colors.green,
+        actions: <Widget>[
+         DropdownButton<ZimmerStatus>(
+  value: _selectedFilter,
+  onChanged: (ZimmerStatus? newValue) {
+    setState(() {
+      _selectedFilter = newValue;
+    });
+  },
+  
+  icon: Icon(Icons.filter_list, color: Colors.white),  // geändert zu einem Filter-Symbol
+  style: TextStyle(color: Color.fromARGB(255, 53, 21, 193), fontWeight: FontWeight.bold),
+  dropdownColor: Colors.grey[200],
+  items: ZimmerStatus.values.map((ZimmerStatus status) {
+    return DropdownMenuItem<ZimmerStatus>(
+      value: status,
+      child: Text(
+        status.toString().split('.').last,
+        style: TextStyle(fontSize: 18),
+      ),
+    );
+  }).toList(),
+           
+          ),
+        ],
       ),
       body: ListView.builder(
-        itemCount: daten.zimmerListe.length,
+        itemCount: gefilterteListe.length,
         itemBuilder: (context, index) {
-          final zimmer = daten.zimmerListe[index];
+          final zimmer = gefilterteListe[index];
+          Patient? patientImZimmer = zimmer.istBelegt ? 
+            daten.patientenListe.firstWhere(
+              (patient) => patient.zimmerNummer == zimmer.nummer,
+              
+            ) : null;
+          bool isPatientInGoodHealth = patientImZimmer?.aktuellerGesundheitszustand ?? false;
+
           return Card(
+            color: isPatientInGoodHealth ? Colors.green[100] : null, // Grüner Hintergrund für gute Gesundheit
             elevation: 4.0,
             margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
             child: ListTile(
               title: Text('Zimmer ${zimmer.nummer}'),
-              subtitle: Text(zimmer.istBelegt ? 'Belegt' : 'Frei'),
+              subtitle: Text( zimmer.istBelegt ?  'Belegt' : 'Frei'),
               leading: Icon(
-                zimmer.istBelegt ? Icons.person : Icons.hotel,
-                color: zimmer.istBelegt ? const Color.fromARGB(255, 86, 54, 244) : Colors.green,
+                Icons.hotel, // Icon für das Zimmer
+
+                color: zimmer.istBelegt ? (isPatientInGoodHealth ? Colors.green : const Color.fromARGB(255, 86, 54, 244)) : Colors.grey,
               ),
+              trailing: zimmer.istBelegt && isPatientInGoodHealth
+                ? Icon(Icons.check_circle, color: Colors.green)  // Grünes Symbol für guten Gesundheitszustand
+                : null,
             onTap: () {
   if (zimmer.istBelegt) {
     Patient? patientImZimmer = daten.patientenListe.firstWhere(
@@ -58,7 +97,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     builder: (BuildContext context) {
       TextEditingController nameController = TextEditingController();
       TextEditingController geburtsdatumController = TextEditingController();
-      TextEditingController gesundheitszustandController = TextEditingController();
+      
 
       return AlertDialog(
         title: Text('Patient Aufnehmen'),
@@ -73,10 +112,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 controller: geburtsdatumController,
                 decoration: InputDecoration(hintText: "Geburtsdatum (JJJJ-MM-TT)"),
               ),
-              TextField(
-                controller: gesundheitszustandController,
-                decoration: InputDecoration(hintText: "Aktueller Gesundheitszustand"),
-              ),
+              
             ],
           ),
         ),
@@ -89,7 +125,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 id: neueId,
                 name: nameController.text,
                 geburtsdatum: DateTime.parse(geburtsdatumController.text),
-                aktuellerGesundheitszustand: gesundheitszustandController.text,
+                
                 zimmerNummer: zimmerNummer,
               );
               setState(() {
@@ -104,9 +140,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
     },
   );
 }
-// ...
+
 
 void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
+  bool freilassen=patient.aktuellerGesundheitszustand;
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -127,10 +164,7 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
                 'Geburtsdatum: $formattedBirthDate',
                 style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
               ),
-              Text(
-                'Gesundheitszustand: ${patient.aktuellerGesundheitszustand}',
-                style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
-              ),
+              
               Text(
                 'Zimmer: $zimmerNummer',
                 style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
@@ -140,6 +174,7 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
           ),
         ),
         actions: <Widget>[
+          if(freilassen)
           TextButton(
             child: Text('Freilassen'),
             onPressed: () {
@@ -156,8 +191,32 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
   );
 }
 
+List<Zimmer> _filterZimmer() {
+  return daten.zimmerListe.where((zimmer) {
+    // Finde den Patienten, der dem Zimmer zugeordnet ist.
+    Patient? patientImZimmer = zimmer.istBelegt
+        ? daten.patientenListe.firstWhere(
+            (patient) => patient.zimmerNummer == zimmer.nummer,
+           // Wenn kein Patient gefunden wird, gibt null zurück
+          )
+        : null;
 
-// ...
+    switch (_selectedFilter) {
+      case ZimmerStatus.frei:
+        return !zimmer.istBelegt;
+      case ZimmerStatus.belegt:
+        return zimmer.istBelegt && patientImZimmer != null;
+      case ZimmerStatus.bereit:
+        return zimmer.istBelegt &&
+            patientImZimmer != null &&
+            patientImZimmer.aktuellerGesundheitszustand; // Überprüfe den Gesundheitszustand
+      default:
+        return true; // wenn kein Filter ausgewählt ist, zeige alle Zimmer an
+    }
+  }).toList();
+  
+}
+
 
 
 

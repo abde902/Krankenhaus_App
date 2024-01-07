@@ -1,27 +1,38 @@
-
-
 class Patient {
   final int id;
   final String name;
   final DateTime geburtsdatum;
-  String aktuellerGesundheitszustand;
-  int zimmerNummer;  // Hinzugefügte Variable für die Zimmernummer
-  String diagnose;  // Hinzugefügte Variable für die Diagnose
+  bool aktuellerGesundheitszustand;
+  int zimmerNummer;  // Variable für die Zimmernummer
+  List<String> diagnosen;  // Geänderte Variable für die Diagnosen als Liste
+    bool MRT;
+    bool blutuntersuchung;
 
   Patient({
     required this.id,
     required this.name,
     required this.geburtsdatum,
-    required this.aktuellerGesundheitszustand,
-    required this.zimmerNummer,  // Initialisierung der Zimmernummer im Konstruktor
-    this.diagnose = '',  // Die Diagnose wird standardmäßig als leer initialisiert
-  });
+     this.aktuellerGesundheitszustand=false,
+     this.MRT=false,
+     this.blutuntersuchung=false,
+    required this.zimmerNummer,
+    List<String>? initialDiagnosen,  // Optionale Initialisierung der Diagnosen
+  }) : diagnosen = initialDiagnosen ?? [];  // Standardmäßig eine leere Liste, wenn keine Diagnosen gegeben sind
 
-  // Methode zum Hinzufügen oder Aktualisieren der Diagnose
+  // Methode zum Hinzufügen einer Diagnose
   void addDiagnosis(String newDiagnosis) {
-    diagnose = newDiagnosis;
-  }
+    diagnosen.add(newDiagnosis);
   }
 
-  // ... (Weitere Methoden und Logik der Klasse)
+  // Methode zum Löschen einer Diagnose
+  void removeDiagnosis(String diagnosisToRemove) {
+    diagnosen.remove(diagnosisToRemove);
+  }
 
+  // Methode zum Aktualisieren der Diagnosenliste
+  void updateDiagnoses(List<String> newDiagnoses) {
+    diagnosen = newDiagnoses;
+  }
+
+
+}

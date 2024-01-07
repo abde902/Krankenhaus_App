@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'patient.dart';
-import 'daten_patient.dart';
+import 'patient.dart'; // Stelle sicher, dass diese Klasse die aktualisierte Patientenklasse ist.
 
 class PatientDetailScreen extends StatefulWidget {
   final Patient patient;
@@ -14,9 +13,13 @@ class PatientDetailScreen extends StatefulWidget {
 
 class _PatientDetailScreenState extends State<PatientDetailScreen> {
   String diagnosis = '';
+  Key textFieldKey = UniqueKey();
 
   void _speichereDiagnose(String neueDiagnose) {
-    DatenVerwaltung().diagnosen[widget.patient.id] = neueDiagnose;
+    setState(() {
+      widget.patient.addDiagnosis(neueDiagnose); // Füge die neue Diagnose zur Liste hinzu
+      textFieldKey = UniqueKey();
+    });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Diagnose wurde gespeichert.')),
     );
@@ -34,53 +37,117 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Name und Geburtsdatum
             Card(
               child: ListTile(
                 title: Text(
                   'Name: ${widget.patient.name}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(
-                  'Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}',
-                ),
               ),
             ),
-            SizedBox(height: 10),
             Card(
               child: ListTile(
                 title: Text(
-                  'Aktueller Gesundheitszustand',
+                  'Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(widget.patient.aktuellerGesundheitszustand),
               ),
             ),
             SizedBox(height: 10),
+            // Gesundheitszustand als Schalter
+           
+            // Diagnosen
             Card(
               child: ListTile(
                 title: Text(
                   'Diagnosen',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(DatenVerwaltung().diagnosen[widget.patient.id] ?? 'Keine Diagnose vorhanden'),
+                subtitle: widget.patient.diagnosen.isEmpty
+                    ? Text('Keine Diagnosen vorhanden')
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: widget.patient.diagnosen
+                            .map((diagnose) => Text(
+                                  diagnose,
+                                  style: TextStyle(color: Colors.black),
+                                ))
+                            .toList(),
+                      ),
               ),
             ),
+            SizedBox(height: 10),
+            // Neue Diagnose hinzufügen
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
+              key: textFieldKey,
               child: TextField(
                 onChanged: (value) {
                   diagnosis = value;
+                  
                 },
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Neue Diagnose hinzufügen',
                 ),
               ),
-            ),
+            ),  SizedBox(height: 10),
             ElevatedButton(
               onPressed: () => _speichereDiagnose(diagnosis),
-              child: Text('Diagnose speichern'),
+              
+              child: Text('speichern'),
             ),
+         SizedBox(height: 10),
+
+Card(
+  child: ListTile(
+    title: Text(
+      'MRT erforderlich',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    trailing: Switch(
+      value: widget.patient.MRT,
+      onChanged: (value) {
+        setState(() {
+          widget.patient.MRT = value;
+        });
+      },
+    ),
+  ),
+),
+Card(
+  child: ListTile(
+    title: Text(
+      'Blutuntersuchung erforderlich',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    trailing: Switch(
+      value: widget.patient.blutuntersuchung,
+      onChanged: (value) {
+        setState(() {
+          widget.patient.blutuntersuchung = value;
+        });
+      },
+    ),
+  ),
+),
+        Card(
+  child: ListTile(
+    title: Text(
+      'Gesundheitszustand Gut',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    trailing: Switch(
+      value: widget.patient.aktuellerGesundheitszustand,
+      onChanged: (value) {
+        setState(() {
+          widget.patient.aktuellerGesundheitszustand = value;
+        });
+      },
+    ),
+  ),
+),    
           ],
         ),
       ),
