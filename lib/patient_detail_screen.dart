@@ -98,23 +98,56 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
               
               child: Text('speichern'),
             ),
-             Card(
-              child: ListTile(
-                title: Text(
-                  'Gesundheitszustand Gut',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                trailing: Switch(
-                  value: widget.patient.aktuellerGesundheitszustand,
-                  onChanged: (value) {
-                    setState(() {
-                      widget.patient.aktuellerGesundheitszustand = value;
-                    });
-                  },
-                ),
-              ),
-            ),
-          
+         SizedBox(height: 10),
+
+Card(
+  child: ListTile(
+    title: Text(
+      'MRT erforderlich',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    trailing: Switch(
+      value: widget.patient.MRT,
+      onChanged: (value) {
+        setState(() {
+          widget.patient.MRT = value;
+        });
+      },
+    ),
+  ),
+),
+Card(
+  child: ListTile(
+    title: Text(
+      'Blutuntersuchung erforderlich',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    trailing: Switch(
+      value: widget.patient.blutuntersuchung,
+      onChanged: (value) {
+        setState(() {
+          widget.patient.blutuntersuchung = value;
+        });
+      },
+    ),
+  ),
+),
+        Card(
+  child: ListTile(
+    title: Text(
+      'Gesundheitszustand Gut',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    trailing: Switch(
+      value: widget.patient.aktuellerGesundheitszustand,
+      onChanged: (value) {
+        setState(() {
+          widget.patient.aktuellerGesundheitszustand = value;
+        });
+      },
+    ),
+  ),
+),    
           ],
         ),
       ),

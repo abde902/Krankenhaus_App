@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (selectedRole == 'Arzt') {
       Navigator.push(context, MaterialPageRoute(builder: (context) =>  ArztDashboard()));
     } else if (selectedRole == 'Labor') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const LabDashboard()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  LabDashboard()));
     } else if (selectedRole == 'Administrator') {
       Navigator.push(context, MaterialPageRoute(builder: (context) =>   AdminDashboard()));
     }

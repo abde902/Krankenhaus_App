@@ -5,12 +5,16 @@ class Patient {
   bool aktuellerGesundheitszustand;
   int zimmerNummer;  // Variable für die Zimmernummer
   List<String> diagnosen;  // Geänderte Variable für die Diagnosen als Liste
+    bool MRT;
+    bool blutuntersuchung;
 
   Patient({
     required this.id,
     required this.name,
     required this.geburtsdatum,
      this.aktuellerGesundheitszustand=false,
+     this.MRT=false,
+     this.blutuntersuchung=false,
     required this.zimmerNummer,
     List<String>? initialDiagnosen,  // Optionale Initialisierung der Diagnosen
   }) : diagnosen = initialDiagnosen ?? [];  // Standardmäßig eine leere Liste, wenn keine Diagnosen gegeben sind
@@ -30,5 +34,5 @@ class Patient {
     diagnosen = newDiagnoses;
   }
 
-  // ... (Weitere Methoden und Logik der Klasse)
+
 }

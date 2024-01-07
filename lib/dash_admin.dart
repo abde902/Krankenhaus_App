@@ -2,7 +2,8 @@
 import 'package:intl/intl.dart';
 import 'patient.dart';
 import 'daten_patient.dart'; // Stellen Sie sicher, dass diese Datei alle benötigten Informationen enthält.
-
+import 'zimmer.dart';
+enum ZimmerStatus { frei, belegt, bereit }
 class AdminDashboard extends StatefulWidget {
   @override
   _AdminDashboardState createState() => _AdminDashboardState();
@@ -10,25 +11,49 @@ class AdminDashboard extends StatefulWidget {
 
 class _AdminDashboardState extends State<AdminDashboard> {
   final daten = DatenVerwaltung();
-
+  ZimmerStatus? _selectedFilter;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     List<Zimmer> gefilterteListe = _filterZimmer();
+
+  return Scaffold(
       appBar: AppBar(
         title: const Text('Verwaltungs-Dashboard'),
         backgroundColor: Colors.green,
+        actions: <Widget>[
+         DropdownButton<ZimmerStatus>(
+  value: _selectedFilter,
+  onChanged: (ZimmerStatus? newValue) {
+    setState(() {
+      _selectedFilter = newValue;
+    });
+  },
+  
+  icon: Icon(Icons.filter_list, color: Colors.white),  // geändert zu einem Filter-Symbol
+  style: TextStyle(color: Color.fromARGB(255, 53, 21, 193), fontWeight: FontWeight.bold),
+  dropdownColor: Colors.grey[200],
+  items: ZimmerStatus.values.map((ZimmerStatus status) {
+    return DropdownMenuItem<ZimmerStatus>(
+      value: status,
+      child: Text(
+        status.toString().split('.').last,
+        style: TextStyle(fontSize: 18),
+      ),
+    );
+  }).toList(),
+           
+          ),
+        ],
       ),
       body: ListView.builder(
-        itemCount: daten.zimmerListe.length,
+        itemCount: gefilterteListe.length,
         itemBuilder: (context, index) {
-          final zimmer = daten.zimmerListe[index];
-          // Finde den Patienten im Zimmer
+          final zimmer = gefilterteListe[index];
           Patient? patientImZimmer = zimmer.istBelegt ? 
             daten.patientenListe.firstWhere(
               (patient) => patient.zimmerNummer == zimmer.nummer,
               
             ) : null;
-
           bool isPatientInGoodHealth = patientImZimmer?.aktuellerGesundheitszustand ?? false;
 
           return Card(
@@ -37,9 +62,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
             margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
             child: ListTile(
               title: Text('Zimmer ${zimmer.nummer}'),
-              subtitle: Text(zimmer.istBelegt ? 'Belegt' : 'Frei'),
+              subtitle: Text( zimmer.istBelegt ?  'Belegt' : 'Frei'),
               leading: Icon(
                 Icons.hotel, // Icon für das Zimmer
+
                 color: zimmer.istBelegt ? (isPatientInGoodHealth ? Colors.green : const Color.fromARGB(255, 86, 54, 244)) : Colors.grey,
               ),
               trailing: zimmer.istBelegt && isPatientInGoodHealth
@@ -99,7 +125,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 id: neueId,
                 name: nameController.text,
                 geburtsdatum: DateTime.parse(geburtsdatumController.text),
-                aktuellerGesundheitszustand: false,
+                
                 zimmerNummer: zimmerNummer,
               );
               setState(() {
@@ -165,7 +191,31 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
   );
 }
 
+List<Zimmer> _filterZimmer() {
+  return daten.zimmerListe.where((zimmer) {
+    // Finde den Patienten, der dem Zimmer zugeordnet ist.
+    Patient? patientImZimmer = zimmer.istBelegt
+        ? daten.patientenListe.firstWhere(
+            (patient) => patient.zimmerNummer == zimmer.nummer,
+           // Wenn kein Patient gefunden wird, gibt null zurück
+          )
+        : null;
 
+    switch (_selectedFilter) {
+      case ZimmerStatus.frei:
+        return !zimmer.istBelegt;
+      case ZimmerStatus.belegt:
+        return zimmer.istBelegt && patientImZimmer != null;
+      case ZimmerStatus.bereit:
+        return zimmer.istBelegt &&
+            patientImZimmer != null &&
+            patientImZimmer.aktuellerGesundheitszustand; // Überprüfe den Gesundheitszustand
+      default:
+        return true; // wenn kein Filter ausgewählt ist, zeige alle Zimmer an
+    }
+  }).toList();
+  
+}
 
 
 
