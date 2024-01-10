@@ -94,5 +94,7 @@ flutter:
 
 
   assets:
-    - assets/images/logo.jpeg
+    
+  - assets/images/
+  - assets/icons/
 
