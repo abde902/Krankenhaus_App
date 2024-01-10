@@ -39,7 +39,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String? selectedRole = 'Arzt';
+  String? selectedRole = 'Administrator';
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 

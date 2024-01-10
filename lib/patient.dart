@@ -4,35 +4,33 @@ class Patient {
   final DateTime geburtsdatum;
   bool aktuellerGesundheitszustand;
   int zimmerNummer;  // Variable für die Zimmernummer
-  List<String> diagnosen;  // Geänderte Variable für die Diagnosen als Liste
-    bool MRT;
-    bool blutuntersuchung;
+  List<String> diagnosen;  // Liste für die Diagnosen
+  bool MRT;
+  bool blutuntersuchung;
+  List<String> mrts;  // Liste für MRT-Diagnosen
+  // Liste für Blutuntersuchungen
 
   Patient({
     required this.id,
     required this.name,
     required this.geburtsdatum,
-     this.aktuellerGesundheitszustand=false,
-     this.MRT=false,
-     this.blutuntersuchung=false,
+    this.aktuellerGesundheitszustand = false,
+    this.MRT = false,
+    this.blutuntersuchung = false,
     required this.zimmerNummer,
-    List<String>? initialDiagnosen,  // Optionale Initialisierung der Diagnosen
-  }) : diagnosen = initialDiagnosen ?? [];  // Standardmäßig eine leere Liste, wenn keine Diagnosen gegeben sind
+    List<String>? initialDiagnosen,
+    List<String>? initialMRTs,
+    
+  }) : diagnosen = initialDiagnosen ?? [],
+       mrts = initialMRTs ?? [];
 
   // Methode zum Hinzufügen einer Diagnose
   void addDiagnosis(String newDiagnosis) {
     diagnosen.add(newDiagnosis);
   }
 
-  // Methode zum Löschen einer Diagnose
-  void removeDiagnosis(String diagnosisToRemove) {
-    diagnosen.remove(diagnosisToRemove);
+ void addMRTImage(String imageName) {
+    mrts.add(imageName);
   }
-
-  // Methode zum Aktualisieren der Diagnosenliste
-  void updateDiagnoses(List<String> newDiagnoses) {
-    diagnosen = newDiagnoses;
-  }
-
 
 }

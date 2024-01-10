@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'patient.dart'; // Stelle sicher, dass diese Datei die korrekte Patientenklasse enthält
 import 'daten_patient.dart'; // Stelle sicher, dass diese Datei alle benötigten Informationen enthält
-import 'test_detail_screen.dart';
-enum LabTest { alle, MRT, blutuntersuchung }
-
+import 'blut_page_details.dart';
+import 'mrt_page_details.dart';
+enum LabTest { MRT, blutuntersuchung }
 class LabDashboard extends StatefulWidget {
   @override
   _LabDashboardState createState() => _LabDashboardState();
+  
+  
 }
 
 class _LabDashboardState extends State<LabDashboard> {
   final DatenVerwaltung daten = DatenVerwaltung();
-  LabTest _selectedTest = LabTest.alle; // Standardmäßig alle Tests anzeigen
-
+  LabTest _selectedTest = LabTest.MRT; 
+ 
   @override
   Widget build(BuildContext context) {
     List<Patient> gefilterteListe = _filterPatients();
@@ -45,16 +47,29 @@ class _LabDashboardState extends State<LabDashboard> {
         itemCount: gefilterteListe.length,
         itemBuilder: (context, index) {
           final patient = gefilterteListe[index];
-
+        
           return Card(
             child: ListTile(
-              title: Text('Test ${patient.id}'),
-                leading: Icon(Icons.local_hospital, color: Colors.blue),
-              onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TestDetailPage(testId: patient.id)),
-          );
+              
+              title:Text( 'Test ${index+1}'),
+              subtitle: Text(_selectedTest == LabTest.MRT ? ' MRT ' : _selectedTest == LabTest.blutuntersuchung ?'BLUTUNTERSUCHUNG':'n'),
+              
+               trailing: Text('name:${patient.name}'),
+               leading: Image.asset(_selectedTest == LabTest.MRT ?'assets/icons/image.png': _selectedTest == LabTest.blutuntersuchung ?'assets/icons/blood1.png':'n'),
+               onTap: () {
+         
+  if (_selectedTest == LabTest.MRT) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MRTDetailPage(patient: patient)),
+    );
+  } else if (_selectedTest == LabTest.blutuntersuchung) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => BlutuntersuchungDetailPage(patient: patient)),
+    );
+  }
+
         },
               // Weitere Informationen oder Aktionen hier hinzufügen
             ),
@@ -75,9 +90,11 @@ class _LabDashboardState extends State<LabDashboard> {
         return daten.patientenListe.where((p) => p.MRT).toList();
       case LabTest.blutuntersuchung:
         return daten.patientenListe.where((p) => p.blutuntersuchung).toList();
-      case LabTest.alle:
+     
       default:
-        return daten.patientenListe;
+         return daten.patientenListe.where((p) => p.blutuntersuchung).toList();
     }
   }
+ 
+
 }

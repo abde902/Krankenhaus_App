@@ -211,7 +211,7 @@ List<Zimmer> _filterZimmer() {
             patientImZimmer != null &&
             patientImZimmer.aktuellerGesundheitszustand; // Überprüfe den Gesundheitszustand
       default:
-        return true; // wenn kein Filter ausgewählt ist, zeige alle Zimmer an
+        return !zimmer.istBelegt; 
     }
   }).toList();
   

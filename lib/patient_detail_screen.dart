@@ -132,7 +132,8 @@ Card(
     ),
   ),
 ),
-        Card(
+        
+Card(
   child: ListTile(
     title: Text(
       'Gesundheitszustand Gut',
@@ -145,9 +146,16 @@ Card(
           widget.patient.aktuellerGesundheitszustand = value;
         });
       },
+      activeTrackColor: Colors.green[200], // Farbe des Tracks, wenn der Switch aktiv ist
+      activeColor: Colors.green, // Farbe des Knopfs, wenn der Switch aktiv ist
+    ),
+    leading: Icon(
+      widget.patient.aktuellerGesundheitszustand ? Icons.check_circle : Icons.cancel,
+      color: widget.patient.aktuellerGesundheitszustand ? Colors.green : const Color.fromARGB(255, 194, 25, 25),
     ),
   ),
-),    
+),
+
           ],
         ),
       ),
