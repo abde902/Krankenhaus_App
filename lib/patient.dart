@@ -8,7 +8,8 @@ class Patient {
   bool MRT;
   bool blutuntersuchung;
   List<String> mrts;  // Liste für MRT-Diagnosen
-  // Liste für Blutuntersuchungen
+  Map<String, List<String>> mrtBilder = {};
+  
 
   Patient({
     required this.id,
@@ -31,6 +32,18 @@ class Patient {
 
  void addMRTImage(String imageName) {
     mrts.add(imageName);
+  } 
+  void removeMRTImage(String imageName) {
+    mrts.remove(imageName);
+  }
+void addMRTBild(String mrtTyp, String bildName) {
+    if (!mrtBilder.containsKey(mrtTyp)) {
+      mrtBilder[mrtTyp] = [];
+    }
+    mrtBilder[mrtTyp]!.add(bildName);
   }
 
+  void removeMRTBild(String mrtTyp, String bildName) {
+    mrtBilder[mrtTyp]?.remove(bildName);
+  }
 }

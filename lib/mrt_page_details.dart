@@ -21,7 +21,11 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
       });
     }
   }
-
+ void removeImageFromList(String imageName) {
+    setState(() {
+      widget.patient.removeMRTImage(imageName);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +66,11 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
                     key: ValueKey(imgName),
                     fit: BoxFit.cover, // Bild an die Größe des Grid-Elements anpassen
                     errorBuilder: (context, error, stackTrace) {
-                      return Center(child: Text('Bild $imgName konnte nicht geladen werden.'));
-                    },
+  
+                      // Wenn ein Fehler auftritt, entfernen Sie das Bild aus der Liste
+                      WidgetsBinding.instance!.addPostFrameCallback((_) => removeImageFromList(imgName));
+                      return Center(child: Text('Bild konnte nicht geladen werden.'));
+                                      },
                   ),
                 );
               },

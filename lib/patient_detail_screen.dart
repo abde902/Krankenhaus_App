@@ -13,16 +13,31 @@ class PatientDetailScreen extends StatefulWidget {
 
 class _PatientDetailScreenState extends State<PatientDetailScreen> {
   String diagnosis = '';
+  String mrtTyp = '';
   Key textFieldKey = UniqueKey();
+    Key mrtein = UniqueKey();
 
   void _speichereDiagnose(String neueDiagnose) {
+    if(neueDiagnose.isNotEmpty){
     setState(() {
-      widget.patient.addDiagnosis(neueDiagnose); // Füge die neue Diagnose zur Liste hinzu
+      widget.patient.addDiagnosis(neueDiagnose);
+      diagnosis=''; // Füge die neue Diagnose zur Liste hinzu
       textFieldKey = UniqueKey();
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Diagnose wurde gespeichert.')),
     );
+  }
+  }
+  void _speichereMRTTyp() {
+    if (mrtTyp.isNotEmpty) {
+      setState(() {
+        widget.patient.mrtBilder[mrtTyp] = []; // Erstellt einen neuen Eintrag für den MRT-Typ
+        mrtTyp = ''; // Setzt den MRT-Typ zurück nach dem Speichern
+         mrtein = UniqueKey();
+      });
+   
+    }
   }
 
   @override
@@ -30,13 +45,13 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Patientenprofil'),
-        backgroundColor: const Color.fromRGBO(76, 175, 80, 1),
+         backgroundColor: Colors.green,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             // Name und Geburtsdatum
             Card(
               child: ListTile(
@@ -55,8 +70,6 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
               ),
             ),
             SizedBox(height: 10),
-            // Gesundheitszustand als Schalter
-           
             // Diagnosen
             Card(
               child: ListTile(
@@ -85,37 +98,76 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
               child: TextField(
                 onChanged: (value) {
                   diagnosis = value;
-                  
                 },
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Neue Diagnose hinzufügen',
                 ),
               ),
-            ),  SizedBox(height: 10),
+            ),
             ElevatedButton(
               onPressed: () => _speichereDiagnose(diagnosis),
               
               child: Text('speichern'),
             ),
-         SizedBox(height: 10),
-
-Card(
-  child: ListTile(
-    title: Text(
-      'MRT erforderlich',
-      style: TextStyle(fontWeight: FontWeight.bold),
-    ),
-    trailing: Switch(
-      value: widget.patient.MRT,
+            
+            SizedBox(height: 10),
+            // MRT-Typ hinzufügen
+            Card(
+              child: ListTile(
+                title: Text(
+                  'MRT erforderlich',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Switch(
+                  value: widget.patient.MRT,
+                  onChanged: (value) {
+                    setState(() {
+                      widget.patient.MRT = value;
+                    });
+                  },
+                ),
+              ),
+            ),
+            if (widget.patient.MRT) ...[
+              Card(
+                child: ListTile(
+                  title: Text(
+                    'MRT-Typen',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: widget.patient.mrtBilder.keys.isEmpty
+                      ? Text('Keine MRT-Typen vorhanden')
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: widget.patient.mrtBilder.keys
+                              .map((mrtTyp) => Text(
+                                    mrtTyp,
+                                    style: TextStyle(color: Colors.black),
+                                  ))
+                              .toList(),
+                        ),
+                ),
+              ),
+  Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10.0), 
+     key: mrtein,
+    child: TextField(
       onChanged: (value) {
-        setState(() {
-          widget.patient.MRT = value;
-        });
+        mrtTyp = value;
       },
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'MRT-Typ eingeben',
+      ),
     ),
   ),
-),
+  ElevatedButton(
+    onPressed: _speichereMRTTyp,
+    child: Text('MRT-Typ speichern'),
+  ),
+],
+
 Card(
   child: ListTile(
     title: Text(
