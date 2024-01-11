@@ -39,7 +39,17 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
    
     }
   }
-
+  @override
+  void dispose() {
+    // Überprüfen Sie, ob MRT eingeschaltet ist und ob MRT-Typen vorhanden sind
+    if (widget.patient.MRT && widget.patient.mrtBilder.isEmpty) {
+      // Wenn MRT eingeschaltet ist, aber keine MRT-Typen vorhanden sind, schalten Sie MRT aus
+      setState(() {
+        widget.patient.MRT = false;
+      });
+    }
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -30,12 +30,8 @@ class Patient {
     diagnosen.add(newDiagnosis);
   }
 
- void addMRTImage(String imageName) {
-    mrts.add(imageName);
-  } 
-  void removeMRTImage(String imageName) {
-    mrts.remove(imageName);
-  }
+ 
+
 void addMRTBild(String mrtTyp, String bildName) {
     if (!mrtBilder.containsKey(mrtTyp)) {
       mrtBilder[mrtTyp] = [];
