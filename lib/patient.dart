@@ -3,12 +3,13 @@ class Patient {
   final String name;
   final DateTime geburtsdatum;
   bool aktuellerGesundheitszustand;
-  int zimmerNummer;  // Variable für die Zimmernummer
-  List<String> diagnosen;  // Liste für die Diagnosen
+  int zimmerNummer;
+  List<String> diagnosen;
   bool MRT;
   bool blutuntersuchung;
-  List<String> mrts;  // Liste für MRT-Diagnosen
-  // Liste für Blutuntersuchungen
+  List<String> mrts;
+  Map<String, List<String>> mrtBilder = {};
+  Map<String, double> kbbErgebnisse = {}; // Map für KBB-Ergebnisse
 
   Patient({
     required this.id,
@@ -20,17 +21,31 @@ class Patient {
     required this.zimmerNummer,
     List<String>? initialDiagnosen,
     List<String>? initialMRTs,
-    
   }) : diagnosen = initialDiagnosen ?? [],
        mrts = initialMRTs ?? [];
 
-  // Methode zum Hinzufügen einer Diagnose
   void addDiagnosis(String newDiagnosis) {
     diagnosen.add(newDiagnosis);
   }
 
- void addMRTImage(String imageName) {
-    mrts.add(imageName);
+  void addMRTBild(String mrtTyp, String bildName) {
+    if (!mrtBilder.containsKey(mrtTyp)) {
+      mrtBilder[mrtTyp] = [];
+    }
+    mrtBilder[mrtTyp]!.add(bildName);
   }
 
+  void removeMRTBild(String mrtTyp, String bildName) {
+    mrtBilder[mrtTyp]?.remove(bildName);
+  }
+
+  // Methode zum Hinzufügen von KBB-Ergebnissen
+  void addKBBErgebnis(String parameter, double wert) {
+    kbbErgebnisse[parameter] = wert;
+  }
+
+  //Methode, um alle KBB-Ergebnisse zu erhalten
+  Map<String, double> getKBBErgebnisse() {
+    return kbbErgebnisse;
+  }
 }

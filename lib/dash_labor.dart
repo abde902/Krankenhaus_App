@@ -13,7 +13,9 @@ class LabDashboard extends StatefulWidget {
 
 class _LabDashboardState extends State<LabDashboard> {
   final DatenVerwaltung daten = DatenVerwaltung();
+  
   LabTest _selectedTest = LabTest.MRT; 
+
  
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class _LabDashboardState extends State<LabDashboard> {
               title:Text( 'Test ${index+1}'),
               subtitle: Text(_selectedTest == LabTest.MRT ? ' MRT ' : _selectedTest == LabTest.blutuntersuchung ?'BLUTUNTERSUCHUNG':'n'),
               
-               trailing: Text('name:${patient.name}'),
+               trailing: Text('name:${patient.name}   patient ID:${patient.id}'),
                leading: Image.asset(_selectedTest == LabTest.MRT ?'assets/icons/image.png': _selectedTest == LabTest.blutuntersuchung ?'assets/icons/blood1.png':'n'),
                onTap: () {
          
