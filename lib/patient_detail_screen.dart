@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'patient.dart'; // Stelle sicher, dass diese Klasse die aktualisierte Patientenklasse ist.
-
+import 'ergebnis-page.dart';
 class PatientDetailScreen extends StatefulWidget {
   final Patient patient;
 
@@ -40,6 +40,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     }
   }
   @override
+  
   void dispose() {
     // Überprüfen Sie, ob MRT eingeschaltet ist und ob MRT-Typen vorhanden sind
     if (widget.patient.MRT && widget.patient.mrtBilder.isEmpty) {
@@ -51,7 +52,10 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     super.dispose();
   }
   @override
+  
   Widget build(BuildContext context) {
+     bool hatBlutuntersuchungsergebnisse = widget.patient.blutuntersuchung && widget.patient.kbbErgebnisse.isNotEmpty;
+       bool hatMRTBilder = widget.patient.MRT && widget.patient.mrtBilder.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
         title: Text('Patientenprofil'),
@@ -143,11 +147,11 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
               Card(
                 child: ListTile(
                   title: Text(
-                    'MRT-Typen',
+                    'MRt',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: widget.patient.mrtBilder.keys.isEmpty
-                      ? Text('Keine MRT-Typen vorhanden')
+                      ? Text('')
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: widget.patient.mrtBilder.keys
@@ -168,13 +172,13 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
       },
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'MRT-Typ eingeben',
+        labelText: 'Eingabe des zu scannenden Körperteils',
       ),
     ),
   ),
   ElevatedButton(
     onPressed: _speichereMRTTyp,
-    child: Text('MRT-Typ speichern'),
+    child: Text(' speichern'),
   ),
 ],
 
@@ -194,7 +198,20 @@ Card(
     ),
   ),
 ),
-        
+         if (hatBlutuntersuchungsergebnisse || hatMRTBilder)
+              ElevatedButton(
+                onPressed: () {
+                 
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlutuntersuchungErgebnissePage(patient: widget.patient),
+                      ),
+                    );
+                  
+                },
+                child: Text('Ergebnisse anzeigen'),
+              ),
 Card(
   child: ListTile(
     title: Text(

@@ -75,7 +75,7 @@ if (widget.patient.mrtBilder.isNotEmpty) ...[
         Expanded(
           flex: 1,
           child: Text(
-            'MRT-Typ auswählen:',
+            'scannende Körperteil auswählen:',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -108,15 +108,15 @@ if (widget.patient.mrtBilder.isNotEmpty) ...[
                   imageName = value;
                 },
                 decoration: InputDecoration(
-                  labelText: 'Bildname eingeben (z.B. bild.jpg)',
+                  labelText: 'Bildname eingeben (z.B. bild)',
                 ),
               ),
             ),
             ElevatedButton(
               onPressed: addImageToListAndShow,
-              child: Text('Bild zum ausgewählten MRT-Typ hinzufügen'),
+              child: Text('Bild  hinzufügen'),
             ),
-            // Anzeige der Bilder für den ausgewählten MRT-Typ
+            // Anzeige der Bilder für den ausgewählten
             if (selectedMRTTyp.isNotEmpty) ...[
               Padding(
                 padding: EdgeInsets.all(16.0),
@@ -140,7 +140,7 @@ if (widget.patient.mrtBilder.isNotEmpty) ...[
                       'assets/images/$imgName.jpg',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                         WidgetsBinding.instance!.addPostFrameCallback((_) => removeImageFromList(selectedMRTTyp,imgName));
+                         WidgetsBinding.instance.addPostFrameCallback((_) => removeImageFromList(selectedMRTTyp,imgName));
                         return Container();
                       },
                     ),
