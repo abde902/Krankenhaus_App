@@ -36,90 +36,74 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String? selectedRole = 'Administrator';
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
 
-  void navigateToDashboard() {
-    if (selectedRole == 'Arzt') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>  ArztDashboard()));
-    } else if (selectedRole == 'Labor') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>  LabDashboard()));
-    } else if (selectedRole == 'Administrator') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>   AdminDashboard()));
-    }
+  void navigateToArztDashboard() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ArztDashboard()));
   }
 
-  @override
+  void navigateToLabDashboard() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LabDashboard()));
+  }
+
+  void navigateToAdminDashboard() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDashboard()));
+  }
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Color.fromARGB(255, 36, 116, 165), Color.fromARGB(255, 50, 164, 55)],
+          image: DecorationImage(
+            image: AssetImage('assets/images/hin.jpg'), 
+            fit: BoxFit.cover, 
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(50.0),
           child: ListView(
             children: <Widget>[
-              const SizedBox(height: 40),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Select Role',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person_outline),
-                ),
-                value: selectedRole,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedRole = newValue;
-                  });
-                },
-                items: const <String>['Arzt', 'Administrator', 'Labor']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email_outlined),
-                ),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock_outline),
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 60),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromARGB(255, 61, 162, 66),
-                  onPrimary: Color.fromARGB(166, 255, 255, 255),
+                  primary:Color.fromARGB(255, 94, 221, 101),
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                onPressed: navigateToDashboard,
-                child: const Text('Login'),
+                onPressed: navigateToArztDashboard,
+                child: const Text('Arzt Dashboard'),
               ),
+              const SizedBox(height: 60),
+               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary:Color.fromARGB(255, 94, 221, 101),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onPressed: navigateToAdminDashboard,
+                child: const Text('Administrator Dashboard'),
+              ),
+               const SizedBox(height:60),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 94, 221, 101),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onPressed: navigateToLabDashboard,
+                child: const Text('Labor Dashboard'),
+              ),
+             
+             
             ],
           ),
         ),
@@ -127,6 +111,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+
 
 
 
