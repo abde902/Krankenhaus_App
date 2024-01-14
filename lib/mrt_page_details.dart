@@ -13,7 +13,7 @@ class MRTDetailPage extends StatefulWidget {
 class _MRTDetailPageState extends State<MRTDetailPage> {
   String selectedMRTTyp = '';
   String imageName = '';
-
+   
   @override
   void initState() {
     super.initState();
@@ -35,6 +35,16 @@ setState(() {
         widget.patient.removeMRTBild(typ, imag);
       });
 
+  }
+  void _markMRTAsComplete() {bool hatMRTBilder = widget.patient.hatMRTBilder();
+    if (hatMRTBilder) {
+    setState(() {
+      widget.patient.mrtfertig = true;
+    });
+    Navigator.of(context).pop(true); // Rückgabewert true, wenn fertig
+    }else{
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Die Ergebnis ist noch nicht vollständig')));
+    }
   }
 
   @override
@@ -148,6 +158,16 @@ if (widget.patient.mrtBilder.isNotEmpty) ...[
                 },
               ),
             ],
+              Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: ElevatedButton(
+                onPressed: _markMRTAsComplete,
+                child: Text('Fertig'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                ),
+              ),
+            ),
           ],
         ),
       ),

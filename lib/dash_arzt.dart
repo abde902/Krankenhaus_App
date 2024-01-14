@@ -14,7 +14,6 @@ class _ArztDashboardState extends State<ArztDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // Verwenden Sie direkt die gesamte Patientenliste, da die Suchfunktion entfernt wird.
     List<Patient> patientenListe = daten.patientenListe;
 
     return Scaffold(
@@ -29,13 +28,32 @@ class _ArztDashboardState extends State<ArztDashboard> {
               itemCount: patientenListe.length,
               itemBuilder: (context, index) {
                 final patient = patientenListe[index];
+
+                Color cardColor = Colors.white; // Standardfarbe
+                String statusText = '';
+
+                // Prüfen Sie den Status der Untersuchungen und passen Sie die Farbe und den Text entsprechend an
+                if ((patient.MRT&& patient.mrtfertig) && (patient.blutuntersuchung  && patient.blutfertig)) {
+                  cardColor =  const Color.fromARGB(255, 222, 33, 243);
+                  statusText = 'Ergebnisse bereit';
+                } else if ((patient.MRT&& patient.mrtfertig&&!patient.blutuntersuchung) || (patient.blutuntersuchung  && patient.blutfertig&&!patient.MRT))  {
+
+                  cardColor = const Color.fromARGB(255, 222, 33, 243);
+                  statusText = 'Ergebnisse bereit';
+                }
+                if(patient.aktuellerGesundheitszustand){
+                    cardColor =  Color.fromRGBO(22, 148, 27, 1);
+                  statusText = 'Gesundheitzustand GUT';
+                }
+                
                 return Card(
                   elevation: 4.0,
                   margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                  color: cardColor,
                   child: ListTile(
                     leading: Icon(Icons.person, color: Color.fromRGBO(64, 68, 193, 1)),
                     title: Text(patient.name),
-                    subtitle: Text('Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(patient.geburtsdatum)}'),
+                    subtitle: Text('Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(patient.geburtsdatum)}\n$statusText'),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -54,3 +72,4 @@ class _ArztDashboardState extends State<ArztDashboard> {
     );
   }
 }
+

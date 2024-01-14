@@ -17,6 +17,7 @@ class _BlutuntersuchungDetailPageState extends State<BlutuntersuchungDetailPage>
   TextEditingController pltController = TextEditingController();
   TextEditingController hctController = TextEditingController();
   TextEditingController rbcController = TextEditingController();
+   
 void saveBloodTestResults() {
   // Überprüfung und Speicherung jedes Parameters, falls nicht leer
   if (hbController.text.isNotEmpty) {
@@ -47,7 +48,18 @@ void saveBloodTestResults() {
   // Zeigen Sie eine Bestätigungsnachricht an
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Blutuntersuchungsergebnisse gespeichert.')));
 }
+ void _blutComplete() {var kbbErgebnisse = widget.patient.getKBBErgebnisse();
+ if(kbbErgebnisse.isNotEmpty){
+    setState(() {
+      widget.patient.blutfertig = true;
+    });
+   Navigator.pop(context, true);  // Kehrt zur vorherigen Seite zurück
+  } else{
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Die Ergebnis ist noch nicht vollständig')));
 
+  }
+  
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +115,16 @@ void saveBloodTestResults() {
             ElevatedButton(
               onPressed: saveBloodTestResults,
               child: Text('Ergebnisse speichern'),
+            ),
+              Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: ElevatedButton(
+                onPressed: _blutComplete,
+                child: Text('Fertig'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                ),
+              ),
             ),
           ],
         ),

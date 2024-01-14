@@ -85,13 +85,13 @@ return Scaffold(
       case 'Hb':
         return 'Hämoglobin';
       case 'WBC':
-        return 'Weiße Blutkörperchen';
+        return 'Leukozyten';
       case 'PLT':
         return 'Thrombozyten';
       case 'Hct':
         return 'Hämatokrit';
       case 'RBC':
-        return 'Rote Blutkörperchen';
+        return 'Erythrozyten';
       default:
         return abbr;
     }
