@@ -7,6 +7,8 @@ class Patient {
   List<String> diagnosen;
   bool MRT;
   bool blutuntersuchung;
+  bool mrtfertig;
+  bool blutfertig;
   List<String> mrts;
   Map<String, List<String>> mrtBilder = {};
   Map<String, double> kbbErgebnisse = {}; // Map für KBB-Ergebnisse
@@ -18,6 +20,8 @@ class Patient {
     this.aktuellerGesundheitszustand = false,
     this.MRT = false,
     this.blutuntersuchung = false,
+    this.mrtfertig=false,
+    this.blutfertig=false,
     required this.zimmerNummer,
     List<String>? initialDiagnosen,
     List<String>? initialMRTs,
@@ -37,6 +41,10 @@ class Patient {
 
   void removeMRTBild(String mrtTyp, String bildName) {
     mrtBilder[mrtTyp]?.remove(bildName);
+  }
+    bool hatMRTBilder() {
+    // Überprüfen, ob die Map mrtBilder irgendwelche Einträge hat
+    return mrtBilder.values.any((bilderListe) => bilderListe.isNotEmpty);
   }
 
   // Methode zum Hinzufügen von KBB-Ergebnissen

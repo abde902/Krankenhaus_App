@@ -55,7 +55,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
   
   Widget build(BuildContext context) {
      bool hatBlutuntersuchungsergebnisse = widget.patient.blutuntersuchung && widget.patient.kbbErgebnisse.isNotEmpty;
-       bool hatMRTBilder = widget.patient.MRT && widget.patient.mrtBilder.isNotEmpty;
+       bool hatMRTBilder = widget.patient.hatMRTBilder();
     return Scaffold(
       appBar: AppBar(
         title: Text('Patientenprofil'),
@@ -147,7 +147,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
               Card(
                 child: ListTile(
                   title: Text(
-                    'MRt',
+                    'MRT',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: widget.patient.mrtBilder.keys.isEmpty
@@ -220,6 +220,7 @@ Card(
     ),
     trailing: Switch(
       value: widget.patient.aktuellerGesundheitszustand,
+      
       onChanged: (value) {
         setState(() {
           widget.patient.aktuellerGesundheitszustand = value;
