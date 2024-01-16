@@ -12,13 +12,16 @@ class ArztDashboard extends StatefulWidget {
 class _ArztDashboardState extends State<ArztDashboard> {
   final daten = DatenVerwaltung();
 
+
   @override
   Widget build(BuildContext context) {
     List<Patient> patientenListe = daten.patientenListe;
 
+
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Arzt-Dashboard'),
+        title: const Text('Arztlabor'),
         backgroundColor: Color.fromRGBO(76, 175, 80, 1),
       ),
       body: Column(

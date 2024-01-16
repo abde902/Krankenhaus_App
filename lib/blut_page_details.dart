@@ -55,7 +55,7 @@ void saveBloodTestResults() {
     });
    Navigator.pop(context, true);  // Kehrt zur vorherigen Seite zurück
   } else{
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Die Ergebnis ist noch nicht vollständig')));
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Das Ergebnis ist noch nicht vollständig')));
 
   }
   
@@ -74,7 +74,7 @@ void saveBloodTestResults() {
             Card(
               child: ListTile(
                 title: Text(
-                  'Name: ${widget.patient.name}',
+                  'Name und Vorname: ${widget.patient.name}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),

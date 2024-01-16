@@ -47,7 +47,7 @@ class _LabDashboardState extends State<LabDashboard> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Labor Dashboard'),
+        title: const Text('Laborportal'),
          backgroundColor: Colors.green,
         actions: <Widget>[
           DropdownButton<LabTest>(
@@ -80,7 +80,7 @@ class _LabDashboardState extends State<LabDashboard> {
               title:Text( 'Test ${index+1}'),
               subtitle: Text(_selectedTest == LabTest.MRT ? ' MRT ' : _selectedTest == LabTest.blutuntersuchung ?'BLUTUNTERSUCHUNG':'n'),
               
-               trailing: Text('name:${patient.name}   patient ID:${patient.id}'),
+               trailing: Text('Name(n) und Vorname(n):${patient.name}   Patient ID:${patient.id}'),
                leading: Image.asset(_selectedTest == LabTest.MRT ?'assets/icons/image.png': _selectedTest == LabTest.blutuntersuchung ?'assets/icons/blood1.png':'n'),
                onTap: ()async {
          

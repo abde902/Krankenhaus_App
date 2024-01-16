@@ -70,7 +70,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
             Card(
               child: ListTile(
                 title: Text(
-                  'Name: ${widget.patient.name}',
+                  'Name(n) und Vorname(n): ${widget.patient.name}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -122,7 +122,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
             ElevatedButton(
               onPressed: () => _speichereDiagnose(diagnosis),
               
-              child: Text('speichern'),
+              child: Text('Speichern'),
             ),
             
             SizedBox(height: 10),
@@ -178,40 +178,52 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
   ),
   ElevatedButton(
     onPressed: _speichereMRTTyp,
-    child: Text(' speichern'),
+    child: Text('Speichern'),
   ),
 ],
 
-Card(
-  child: ListTile(
-    title: Text(
-      'Blutuntersuchung erforderlich',
-      style: TextStyle(fontWeight: FontWeight.bold),
+
+Column(
+  children: [
+    Container(
+      margin: EdgeInsets.only(bottom: 16.0), // Ajustez la valeur selon vos besoins
+      child: Card(
+        child: ListTile(
+          title: Text(
+            'Blutuntersuchung erforderlich',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          trailing: Switch(
+            value: widget.patient.blutuntersuchung,
+            onChanged: (value) {
+              setState(() {
+                widget.patient.blutuntersuchung = value;
+              });
+            },
+          ),
+        ),
+      ),
     ),
-    trailing: Switch(
-      value: widget.patient.blutuntersuchung,
-      onChanged: (value) {
-        setState(() {
-          widget.patient.blutuntersuchung = value;
-        });
-      },
-    ),
-  ),
-),
-         if (hatBlutuntersuchungsergebnisse || hatMRTBilder)
-              ElevatedButton(
-                onPressed: () {
-                 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BlutuntersuchungErgebnissePage(patient: widget.patient),
-                      ),
-                    );
-                  
-                },
-                child: Text('Ergebnisse anzeigen'),
+    if (hatBlutuntersuchungsergebnisse || hatMRTBilder)
+      Container(
+        margin: EdgeInsets.only(top: 20.0), 
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlutuntersuchungErgebnissePage(patient: widget.patient),
               ),
+            );
+          },
+          child: Text('Ergebnisse von Labortests anzeigen'),
+        ),
+      ),
+  ],
+),
+
+
+
 Card(
   child: ListTile(
     title: Text(

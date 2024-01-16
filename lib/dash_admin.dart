@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'patient.dart';
 import 'daten_patient.dart'; // Stellen Sie sicher, dass diese Datei alle benötigten Informationen enthält.
 import 'zimmer.dart';
-enum ZimmerStatus { frei, belegt, bereit }
+enum ZimmerStatus { freie_Zimmer, belegte_Zimmer, bereit_zum_Verlassen }
 class AdminDashboard extends StatefulWidget {
   @override
   _AdminDashboardState createState() => _AdminDashboardState();
@@ -18,7 +18,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   return Scaffold(
       appBar: AppBar(
-        title: const Text('Verwaltungs-Dashboard'),
+        title: const Text('Verwaltungslabor'),
         backgroundColor: Colors.green,
         actions: <Widget>[
          DropdownButton<ZimmerStatus>(
@@ -106,7 +106,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
             children: <Widget>[
               TextField(
                 controller: nameController,
-                decoration: InputDecoration(hintText: "Name des Patienten"),
+                decoration: InputDecoration(hintText: "Name(n) und Vorname(n) des Patienten"),
               ),
               TextField(
                 controller: geburtsdatumController,
@@ -202,11 +202,11 @@ List<Zimmer> _filterZimmer() {
         : null;
 
     switch (_selectedFilter) {
-      case ZimmerStatus.frei:
+      case ZimmerStatus.freie_Zimmer:
         return !zimmer.istBelegt;
-      case ZimmerStatus.belegt:
+      case ZimmerStatus.belegte_Zimmer:
         return zimmer.istBelegt && patientImZimmer != null;
-      case ZimmerStatus.bereit:
+      case ZimmerStatus.bereit_zum_Verlassen:
         return zimmer.istBelegt &&
             patientImZimmer != null &&
             patientImZimmer.aktuellerGesundheitszustand; // Überprüfe den Gesundheitszustand
