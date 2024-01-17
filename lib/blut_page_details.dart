@@ -55,7 +55,7 @@ void saveBloodTestResults() {
     });
    Navigator.pop(context, true);  // Kehrt zur vorherigen Seite zurück
   } else{
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Die Ergebnis ist noch nicht vollständig')));
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Das Ergebnis ist noch nicht vollständig')));
 
   }
   
@@ -71,34 +71,22 @@ void saveBloodTestResults() {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-         Card(
-  child: Column(
-    mainAxisSize: MainAxisSize.min, // Diese Einstellung sorgt dafür, dass die Karte nicht mehr Platz als nötig einnimmt.
-    children: <Widget>[  ListTile(leading: Icon(Icons.person, color: Color.fromRGBO(64, 68, 193, 1)), ),
-      ListTile(
-       
-        title: Text(
-          '      Vorname: ${widget.patient.vorname}',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      ListTile(
-         
-        title: Text(
-          '      Nachname: ${widget.patient.nachname}',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      ListTile(
-        leading: Icon(Icons.cake, color: Color.fromRGBO(64, 68, 193, 1)), 
-        title: Text(
-          'Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-    ],
-  ),
-),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Name: ${widget.patient.name}',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
             TextField(
               controller: hbController,
               decoration: InputDecoration(labelText: 'Hämoglobin (Hb) in g/dL'),

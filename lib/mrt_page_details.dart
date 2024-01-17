@@ -121,17 +121,33 @@ if (widget.patient.mrtBilder.isNotEmpty) ...[
     ),
   ),
 ],
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: TextField(
-                onChanged: (value) {
-                  imageName = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Bildname eingeben (z.B. bild)',
-                ),
-              ),
-            ),
+
+Padding(
+  padding: EdgeInsets.all(16.0),
+  child: Row(
+    children: [
+      Text(
+        'MRT-Bildname eingeben',
+        style: TextStyle(
+          fontSize: 16.0,
+          // Ajoutez d'autres styles au besoin
+        ),
+      ),
+      Expanded(
+        child: TextField(
+          onChanged: (value) {
+            imageName = value;
+          },
+          decoration: InputDecoration(
+            labelText: '  pg(mrt_nieren), pl(mrt_meniskus), pk(mrt_wirkensaeule) oder sn(mrt_wirkensäule1)',
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
+
             ElevatedButton(
               onPressed: addImageToListAndShow,
               child: Text('Bild  hinzufügen'),

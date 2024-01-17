@@ -47,7 +47,7 @@ class _LabDashboardState extends State<LabDashboard> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Labor Dashboard'),
+        title: const Text('Laborportal'),
          backgroundColor: Colors.green,
         actions: <Widget>[
           DropdownButton<LabTest>(
