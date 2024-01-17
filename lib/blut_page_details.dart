@@ -55,7 +55,7 @@ void saveBloodTestResults() {
     });
    Navigator.pop(context, true);  // Kehrt zur vorherigen Seite zurück
   } else{
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Die Ergebnis ist noch nicht vollständig')));
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Das Ergebnis ist noch nicht vollständig')));
 
   }
   
@@ -64,7 +64,7 @@ void saveBloodTestResults() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Blutuntersuchung-Details für ${widget.patient.name}"),
+        title: Text("BlutBild-Details für ${widget.patient.vorname}"),
         backgroundColor: Colors.red,
       ),
       body: SingleChildScrollView(

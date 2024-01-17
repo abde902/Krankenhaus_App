@@ -12,7 +12,7 @@ class BlutuntersuchungErgebnissePage extends StatelessWidget {
 return Scaffold(
       appBar: AppBar(
         title: Text("Ergebnisse "),
-        backgroundColor: Colors.red,
+        backgroundColor: Color.fromARGB(255, 170, 28, 156),
       ),
       body: SingleChildScrollView(
         child: Padding(

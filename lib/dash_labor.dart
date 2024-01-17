@@ -3,7 +3,7 @@ import 'patient.dart'; // Stelle sicher, dass diese Datei die korrekte Patienten
 import 'daten_patient.dart'; // Stelle sicher, dass diese Datei alle benötigten Informationen enthält
 import 'blut_page_details.dart';
 import 'mrt_page_details.dart';
-enum LabTest { MRT, blutuntersuchung }
+enum LabTest { MRT, BlutBild }
 class LabDashboard extends StatefulWidget {
   @override
   _LabDashboardState createState() => _LabDashboardState();
@@ -29,7 +29,7 @@ class _LabDashboardState extends State<LabDashboard> {
       if (firstPatient.MRT) {
         return LabTest.MRT;
       } else if (firstPatient.blutuntersuchung) {
-        return LabTest.blutuntersuchung;
+        return LabTest.BlutBild;
       }
     }
     return LabTest.MRT; // Standardwert oder irgendeine andere Logik
@@ -47,13 +47,13 @@ class _LabDashboardState extends State<LabDashboard> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Labor Dashboard'),
+        title: const Text('Laborportal'),
          backgroundColor: Colors.green,
         actions: <Widget>[
           DropdownButton<LabTest>(
             value: _selectedTest,
             icon: Icon(Icons.filter_list, color: Colors.white),
-            style: TextStyle(color: Color.fromARGB(255, 53, 21, 193), fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
              dropdownColor: Colors.grey[200],
             onChanged: (LabTest? newValue) {
               setState(() {
@@ -78,10 +78,10 @@ class _LabDashboardState extends State<LabDashboard> {
             child: ListTile(
               
               title:Text( 'Test ${index+1}'),
-              subtitle: Text(_selectedTest == LabTest.MRT ? ' MRT ' : _selectedTest == LabTest.blutuntersuchung ?'BLUTUNTERSUCHUNG':'n'),
+              subtitle: Text(_selectedTest == LabTest.MRT ? ' MRT ' : _selectedTest == LabTest.BlutBild ?'BLUTBILD':'n'),
               
-               trailing: Text('name:${patient.name}   patient ID:${patient.id}'),
-               leading: Image.asset(_selectedTest == LabTest.MRT ?'assets/icons/image.png': _selectedTest == LabTest.blutuntersuchung ?'assets/icons/blood1.png':'n'),
+               trailing: Text('Vorname:${patient.vorname}  Nachname:${patient.nachname}    patient ID:${patient.id}'),
+               leading: Image.asset(_selectedTest == LabTest.MRT ?'assets/icons/image.png': _selectedTest == LabTest.BlutBild ?'assets/icons/blood1.png':'n'),
                onTap: ()async {
          
   if (_selectedTest == LabTest.MRT) {
@@ -92,7 +92,7 @@ class _LabDashboardState extends State<LabDashboard> {
                   if (result == true) {
                     _refreshPatientList();
                   }
-  } else if (_selectedTest == LabTest.blutuntersuchung) {
+  } else if (_selectedTest == LabTest.BlutBild) {
     final resulte = await  Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => BlutuntersuchungDetailPage(patient: patient)),
@@ -120,7 +120,7 @@ class _LabDashboardState extends State<LabDashboard> {
   switch (_selectedTest) {
     case LabTest.MRT:
       return daten.patientenListe.where((p) => p.MRT && !p.mrtfertig).toList();
-    case LabTest.blutuntersuchung:
+    case LabTest.BlutBild:
       return daten.patientenListe.where((p) => p.blutuntersuchung && !p.blutfertig).toList();
     default:
       return daten.patientenListe.where((p) => !p.mrtfertig && !p.blutfertig).toList();

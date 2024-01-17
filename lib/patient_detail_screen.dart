@@ -12,6 +12,7 @@ class PatientDetailScreen extends StatefulWidget {
 }
 
 class _PatientDetailScreenState extends State<PatientDetailScreen> {
+  Gesundheitszustand _zustand = Gesundheitszustand.nicht;
   String diagnosis = '';
   String mrtTyp = '';
   Key textFieldKey = UniqueKey();
@@ -21,6 +22,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     if(neueDiagnose.isNotEmpty){
     setState(() {
       widget.patient.addDiagnosis(neueDiagnose);
+      widget.patient.addKrankenverlaufEintrag('Diagnose: '+neueDiagnose);
       diagnosis=''; // Füge die neue Diagnose zur Liste hinzu
       textFieldKey = UniqueKey();
     });
@@ -33,12 +35,42 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     if (mrtTyp.isNotEmpty) {
       setState(() {
         widget.patient.mrtBilder[mrtTyp] = []; // Erstellt einen neuen Eintrag für den MRT-Typ
+        widget.patient.addKrankenverlaufEintrag('MRT: '+mrtTyp);
         mrtTyp = ''; // Setzt den MRT-Typ zurück nach dem Speichern
          mrtein = UniqueKey();
       });
    
     }
   }
+  void _showKrankenverlaufDialog(BuildContext context, Patient patient) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Krankenverlauf'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: patient.krankenverlauf.entries
+              .map((eintrag) => Text(
+                DateFormat('yyyy-MM-dd').format(eintrag.key) + ": " + eintrag.value,
+                style: TextStyle(color: Colors.black),
+              ))
+              .toList(),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Schließen'),
+            onPressed: () {
+              Navigator.of(context).pop(); // Schließt den Dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
   @override
   
   void dispose() {
@@ -54,8 +86,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
   @override
   
   Widget build(BuildContext context) {
-     bool hatBlutuntersuchungsergebnisse = widget.patient.blutuntersuchung && widget.patient.kbbErgebnisse.isNotEmpty;
-       bool hatMRTBilder = widget.patient.hatMRTBilder();
+   
     return Scaffold(
       appBar: AppBar(
         title: Text('Patientenprofil'),
@@ -68,21 +99,60 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
           children: <Widget>[
             // Name und Geburtsdatum
             Card(
-              child: ListTile(
-                title: Text(
-                  'Name: ${widget.patient.name}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text(
-                  'Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+  child: Column(
+    mainAxisSize: MainAxisSize.min, // Diese Einstellung sorgt dafür, dass die Karte nicht mehr Platz als nötig einnimmt.
+    children: <Widget>[
+      ListTile(  leading: Icon(Icons.person, color: Color.fromRGBO(64, 68, 193, 1)), ),
+
+      ListTile(
+       
+        title: Text(
+          '      Vorname: ${widget.patient.vorname} ',
+          style: TextStyle(fontWeight: FontWeight.bold),
+          
+        ),
+        
+      ),
+      ListTile(
+        
+        title: Text(
+          '      Nachname: ${widget.patient.nachname} ',
+          style: TextStyle(fontWeight: FontWeight.bold),
+          
+        ),
+        
+      ),
+        ListTile(
+      
+        title: Text(
+          '      Zimmernummer: ${widget.patient.zimmerNummer} ',
+          style: TextStyle(fontWeight: FontWeight.bold),
+          
+        ),
+        
+      ),
+        ListTile(
+      
+        title: Text(
+          '      Geschlecht: ${widget.patient.gechlecht} ',
+          style: TextStyle(fontWeight: FontWeight.bold),
+          
+        ),
+        
+      ),
+      ListTile(
+        title: Text(
+          '      Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      ElevatedButton(
+            onPressed: () => _showKrankenverlaufDialog(context, widget.patient),
+            child: Text('Krankenverlauf anzeigen'),
+          ),
+    ],
+  ),
+),
             SizedBox(height: 10),
             // Diagnosen
             Card(
@@ -121,8 +191,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
             ),
             ElevatedButton(
               onPressed: () => _speichereDiagnose(diagnosis),
-              
-              child: Text('speichern'),
+              child: Text('Addieren'),
             ),
             
             SizedBox(height: 10),
@@ -178,33 +247,43 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
   ),
   ElevatedButton(
     onPressed: _speichereMRTTyp,
-    child: Text(' speichern'),
+    child: Text(' Addieren'),
   ),
 ],
 
 Card(
   child: ListTile(
     title: Text(
-      'Blutuntersuchung erforderlich',
+      'BlutBild erforderlich',
       style: TextStyle(fontWeight: FontWeight.bold),
     ),
     trailing: Switch(
       value: widget.patient.blutuntersuchung,
       onChanged: (value) {
         setState(() {
-          widget.patient.blutuntersuchung = value;
+          widget.patient.blutuntersuchung = value; 
+          if(widget.patient.blutuntersuchung==true)
+          widget.patient.addKrankenverlaufEintrag('BlutBild ');
         });
       },
     ),
   ),
 ),
-         if (hatBlutuntersuchungsergebnisse || hatMRTBilder)
+        
+          if (((widget.patient.MRT&& widget.patient.mrtfertig) && (widget.patient.blutuntersuchung  && widget.patient.blutfertig))||(( widget.patient.MRT&&  widget.patient.mrtfertig&&! widget.patient.blutuntersuchung) || ( widget.patient.blutuntersuchung  &&  widget.patient.blutfertig&&! widget.patient.MRT)))
+
               ElevatedButton(
-                onPressed: () {
+                onPressed: () { 
+                  setState(() {
+      widget.patient.MRT = false;
+      widget.patient.blutuntersuchung = false;
+      widget.patient.mrtfertig=false;
+      widget.patient.blutfertig=false;
+    });
                  
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      MaterialPageRoute(  
                         builder: (context) => BlutuntersuchungErgebnissePage(patient: widget.patient),
                       ),
                     );
@@ -212,26 +291,51 @@ Card(
                 },
                 child: Text('Ergebnisse anzeigen'),
               ),
+          Card(
+  child: Padding(
+    padding: EdgeInsets.all(8.0), // Fügt innen im Card-Widget einen Abstand hinzu
+    child: Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(8.0), // Optional: Fügt Abstand um die Überschrift hinzu
+          child: Text(
+            'Gesundheitszustand',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _customRadioButton(Gesundheitszustand.gut, 'Gut', Colors.green),
+            _customRadioButton(Gesundheitszustand.leichtReduziert, 'Leicht reduziert', Colors.orange),
+            _customRadioButton(Gesundheitszustand.reduziert, 'Reduziert', Colors.deepOrange),
+            _customRadioButton(Gesundheitszustand.schlecht, 'Schlecht', Colors.red),
+          ],
+        ),
+      ],
+    ),
+  ),
+),
 Card(
   child: ListTile(
     title: Text(
-      'Gesundheitszustand Gut',
+      'kann entlassen ',
       style: TextStyle(fontWeight: FontWeight.bold),
     ),
     trailing: Switch(
-      value: widget.patient.aktuellerGesundheitszustand,
+      value: widget.patient.entlassen,
       
       onChanged: (value) {
         setState(() {
-          widget.patient.aktuellerGesundheitszustand = value;
+          widget.patient.entlassen = value;
         });
       },
       activeTrackColor: Colors.green[200], // Farbe des Tracks, wenn der Switch aktiv ist
       activeColor: Colors.green, // Farbe des Knopfs, wenn der Switch aktiv ist
     ),
     leading: Icon(
-      widget.patient.aktuellerGesundheitszustand ? Icons.check_circle : Icons.cancel,
-      color: widget.patient.aktuellerGesundheitszustand ? Colors.green : const Color.fromARGB(255, 194, 25, 25),
+      widget.patient.entlassen ? Icons.check_circle : Icons.cancel,
+      color: widget.patient.entlassen ? Colors.green : const Color.fromARGB(255, 194, 25, 25),
     ),
   ),
 ),
@@ -240,5 +344,29 @@ Card(
         ),
       ),
     );
+    
   }
+ Widget _customRadioButton(Gesundheitszustand value, String text, Color color) {
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    children: <Widget>[
+      Radio<Gesundheitszustand>(
+        value: value,
+        groupValue: _zustand,
+        onChanged: (Gesundheitszustand? newValue) {
+          setState(() {
+            _zustand = newValue!;
+            widget.patient.setGesundheitszustand(_zustand);
+            widget.patient.addKrankenverlaufEintrag(_zustand.toString());
+          });
+        },
+        activeColor: color, // Farbe des Radio-Buttons, wenn er ausgewählt ist
+      ),
+      Text(
+        text,
+        style: TextStyle(color: color), // Farbe des Textes
+      ),
+    ],
+  );
+}
 }

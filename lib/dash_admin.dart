@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'patient.dart';
 import 'daten_patient.dart'; // Stellen Sie sicher, dass diese Datei alle benötigten Informationen enthält.
 import 'zimmer.dart';
-enum ZimmerStatus { frei, belegt, bereit }
+enum ZimmerStatus { frei, belegt, entlassen }
 class AdminDashboard extends StatefulWidget {
   @override
   _AdminDashboardState createState() => _AdminDashboardState();
@@ -28,10 +28,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
       _selectedFilter = newValue;
     });
   },
-  
+ 
   icon: Icon(Icons.filter_list, color: Colors.white),  // geändert zu einem Filter-Symbol
-  style: TextStyle(color: Color.fromARGB(255, 53, 21, 193), fontWeight: FontWeight.bold),
+  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
   dropdownColor: Colors.grey[200],
+   hint: Text('Filter'),
   items: ZimmerStatus.values.map((ZimmerStatus status) {
     return DropdownMenuItem<ZimmerStatus>(
       value: status,
@@ -54,7 +55,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               (patient) => patient.zimmerNummer == zimmer.nummer,
               
             ) : null;
-          bool isPatientInGoodHealth = patientImZimmer?.aktuellerGesundheitszustand ?? false;
+          bool isPatientInGoodHealth = patientImZimmer?.entlassen ?? false;
 
           return Card(
             color: isPatientInGoodHealth ? Colors.green[100] : null, // Grüner Hintergrund für gute Gesundheit
@@ -95,55 +96,99 @@ class _AdminDashboardState extends State<AdminDashboard> {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      TextEditingController nameController = TextEditingController();
+      // Initialisierung der Variablen und Controller
+      String ausgewahltesGeschlecht = 'Mändlich'; 
+      TextEditingController vornameController = TextEditingController();
+      TextEditingController nachnameController = TextEditingController();
       TextEditingController geburtsdatumController = TextEditingController();
-      
 
-      return AlertDialog(
-        title: Text('Patient Aufnehmen'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(hintText: "Name des Patienten"),
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text('Patient Aufnehmen'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  TextField(
+                    controller: vornameController,
+                    decoration: InputDecoration(hintText: "Vorname des Patienten"),
+                  ),
+                  TextField(
+                    controller: nachnameController,
+                    decoration: InputDecoration(hintText: "Nachname des Patienten"),
+                  ), TextField(
+                    controller: geburtsdatumController,
+                    decoration: InputDecoration(hintText: "Geburtsdatum (JJJJ-MM-TT)"),
+                  ),
+                 
+                  Row(
+                    children: [ Text(
+                'Geschlecht: ',
+                style: TextStyle(color: Colors.black), 
               ),
-              TextField(
-                controller: geburtsdatumController,
-                decoration: InputDecoration(hintText: "Geburtsdatum (JJJJ-MM-TT)"),
+                      Expanded(
+                        child: ListTile(
+                          title: const Text('Männlich'),
+                          leading: Radio<String>(
+                            value: 'Männlich',
+                            groupValue: ausgewahltesGeschlecht,
+                            onChanged: (String? value) {
+                              setState(() => ausgewahltesGeschlecht = value!);
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          title: const Text('Weiblich'),
+                          leading: Radio<String>(
+                            value: 'Weiblich',
+                            groupValue: ausgewahltesGeschlecht,
+                            onChanged: (String? value) {
+                              setState(() => ausgewahltesGeschlecht = value!);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                 
+                ],
               ),
-              
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Aufnehmen'),
+                onPressed: () {
+                  // Patientenerstellung und Hinzufügen zur Liste
+                  int neueId = daten.patientenListe.length + 1;
+                  Patient neuerPatient = Patient(
+                    id: neueId,
+                    vorname: vornameController.text,
+                    nachname: nachnameController.text,
+                    gechlecht: ausgewahltesGeschlecht,
+                    geburtsdatum: DateTime.parse(geburtsdatumController.text),
+                    zimmerNummer: zimmerNummer,
+                  );
+                  setState(() {
+                    daten.patientenListe.add(neuerPatient);
+                    daten.zimmerListe[zimmerNummer - 1].istBelegt = true;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Aufnehmen'),
-            onPressed: () {
-              int neueId = daten.patientenListe.length + 1;
-              Patient neuerPatient = Patient(
-                id: neueId,
-                name: nameController.text,
-                geburtsdatum: DateTime.parse(geburtsdatumController.text),
-                
-                zimmerNummer: zimmerNummer,
-              );
-              setState(() {
-                daten.patientenListe.add(neuerPatient);
-                daten.zimmerListe[zimmerNummer - 1].istBelegt = true;
-              });
-              Navigator.of(context).pop(); // Dialog schließen
-            },
-          ),
-        ],
+          );
+        },
       );
     },
   );
 }
 
 
+
 void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
-  bool freilassen=patient.aktuellerGesundheitszustand;
+  bool freilassen=patient.entlassen;
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -157,7 +202,15 @@ void _zeigePatientenInfoUndEntlassungDialog(Patient patient, int zimmerNummer) {
           child: ListBody(
             children: <Widget>[
               Text(
-                'Name: ${patient.name}',
+                'Vorname: ${patient.vorname}',
+                style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
+              ),
+              Text(
+                'Nachname: ${patient.nachname}',
+                style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
+              ),
+              Text(
+                'Geschlecht: ${patient.gechlecht}',
                 style: TextStyle(color: Colors.black), // Textfarbe auf Schwarz setzen
               ),
               Text(
@@ -206,10 +259,10 @@ List<Zimmer> _filterZimmer() {
         return !zimmer.istBelegt;
       case ZimmerStatus.belegt:
         return zimmer.istBelegt && patientImZimmer != null;
-      case ZimmerStatus.bereit:
+      case ZimmerStatus.entlassen:
         return zimmer.istBelegt &&
             patientImZimmer != null &&
-            patientImZimmer.aktuellerGesundheitszustand; // Überprüfe den Gesundheitszustand
+            patientImZimmer.entlassen; // Überprüfe den Gesundheitszustand
       default:
         return !zimmer.istBelegt; 
     }

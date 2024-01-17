@@ -51,29 +51,39 @@ setState(() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("MRT-Details für ${widget.patient.name}"),
+        title: Text("MRT-Details für ${widget.patient.vorname}"),
         backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
              Card(
-              child: ListTile(
-                title: Text(
-                  'Name: ${widget.patient.name}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text(
-                  'Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-
+  child: Column(
+    mainAxisSize: MainAxisSize.min, // Diese Einstellung sorgt dafür, dass die Karte nicht mehr Platz als nötig einnimmt.
+    children: <Widget>[ListTile(leading: Icon(Icons.person, color: Color.fromRGBO(64, 68, 193, 1)), ),
+      ListTile(
+      
+        title: Text(
+          '      Vorname: ${widget.patient.vorname}',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      ListTile(
+        title: Text(
+          '      Nachname: ${widget.patient.nachname}',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      ListTile(
+        leading: Icon(Icons.cake, color: Color.fromRGBO(64, 68, 193, 1)), 
+        title: Text(
+          'Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+    ],
+  ),
+),
 
 
 
@@ -111,17 +121,33 @@ if (widget.patient.mrtBilder.isNotEmpty) ...[
     ),
   ),
 ],
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: TextField(
-                onChanged: (value) {
-                  imageName = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Bildname eingeben (z.B. bild)',
-                ),
-              ),
-            ),
+
+Padding(
+  padding: EdgeInsets.all(16.0),
+  child: Row(
+    children: [
+      Text(
+        'MRT-Bildname eingeben',
+        style: TextStyle(
+          fontSize: 16.0,
+          // Ajoutez d'autres styles au besoin
+        ),
+      ),
+      Expanded(
+        child: TextField(
+          onChanged: (value) {
+            imageName = value;
+          },
+          decoration: InputDecoration(
+            labelText: '  pg(mrt_nieren), pl(mrt_meniskus), pk(mrt_wirkensaeule) oder sn(mrt_wirkensäule1)',
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
+
             ElevatedButton(
               onPressed: addImageToListAndShow,
               child: Text('Bild  hinzufügen'),
