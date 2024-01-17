@@ -22,7 +22,7 @@ return Scaffold(
               Padding(
         padding: EdgeInsets.symmetric(vertical: 16.0),
         child: Text(patient.blutuntersuchung?
-          'Blutuntersuchung :':'',
+          'BlutBild :':'',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),

@@ -121,37 +121,39 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     decoration: InputDecoration(hintText: "Geburtsdatum (JJJJ-MM-TT)"),
                   ),
                  
-                  Row(
-                    children: [ Text(
-                'Geschlecht: ',
-                style: TextStyle(color: Colors.black), 
-              ),
-                      Expanded(
-                        child: ListTile(
-                          title: const Text('Männlich'),
-                          leading: Radio<String>(
-                            value: 'Männlich',
-                            groupValue: ausgewahltesGeschlecht,
-                            onChanged: (String? value) {
-                              setState(() => ausgewahltesGeschlecht = value!);
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: ListTile(
-                          title: const Text('Weiblich'),
-                          leading: Radio<String>(
-                            value: 'Weiblich',
-                            groupValue: ausgewahltesGeschlecht,
-                            onChanged: (String? value) {
-                              setState(() => ausgewahltesGeschlecht = value!);
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      'Geschlecht: ',
+      style: TextStyle(color: Colors.black), 
+    ),
+    ListTile(
+      title: const Text('Männlich'),
+      leading: Radio<String>(
+        value: 'Männlich',
+        groupValue: ausgewahltesGeschlecht,
+        onChanged: (String? value) {
+          setState(() => ausgewahltesGeschlecht = value!);
+        },
+      ),
+    ),
+    ListTile(
+      title: Text(
+        'Weiblich',
+        style: TextStyle(fontSize: 14), 
+      ),
+      leading: Radio<String>(
+        value: 'Weiblich',
+        groupValue: ausgewahltesGeschlecht,
+        onChanged: (String? value) {
+          setState(() => ausgewahltesGeschlecht = value!);
+        },
+      ),
+    ),
+  ],
+)
+
                  
                 ],
               ),

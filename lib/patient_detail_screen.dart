@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'patient.dart'; // Stelle sicher, dass diese Klasse die aktualisierte Patientenklasse ist.
 import 'ergebnis-page.dart';
+import 'alte-ergebniss.dart';
 class PatientDetailScreen extends StatefulWidget {
   final Patient patient;
 
@@ -70,7 +71,26 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     },
   );
 }
+void _oeffneErgebnissePage() async {
+  await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => BlutuntersuchungErgebnissePage(patient: widget.patient)),
+  );
 
+  // Sobald der Benutzer zurückkehrt, setze MRT und Blutuntersuchung auf false
+  setState(() {
+    widget.patient.MRT = false;
+    widget.patient.blutuntersuchung = false;
+    widget.patient.archiviereKbbErgebnisse();
+    widget.patient.archiviereMrtBilder();
+  });
+}
+void _oeffneAlteErgebnissePage() {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => AlteErgebnissePage(patient: widget.patient)),
+  );
+}
   @override
   
   void dispose() {
@@ -275,41 +295,63 @@ Card(
               ElevatedButton(
                 onPressed: () { 
                   setState(() {
-      widget.patient.MRT = false;
-      widget.patient.blutuntersuchung = false;
+     _oeffneErgebnissePage();
       widget.patient.mrtfertig=false;
       widget.patient.blutfertig=false;
     });
                  
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(  
-                        builder: (context) => BlutuntersuchungErgebnissePage(patient: widget.patient),
-                      ),
-                    );
+                  
                   
                 },
-                child: Text('Ergebnisse anzeigen'),
+               
+                child: Text(' NEU Ergebnisse anzeigen'),
               ),
-          Card(
+              if(widget.patient.alteMrtBilder.isNotEmpty||widget.patient.alteKbbErgebnisse.isNotEmpty)
+                ElevatedButton(
+            onPressed: _oeffneAlteErgebnissePage,
+            child: Text('Alte Ergebnisse anzeigen'),
+          ),
+     Card(
   child: Padding(
-    padding: EdgeInsets.all(8.0), // Fügt innen im Card-Widget einen Abstand hinzu
+    padding: EdgeInsets.all(8.0),
     child: Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.all(8.0), // Optional: Fügt Abstand um die Überschrift hinzu
+          padding: EdgeInsets.all(8.0),
           child: Text(
             'Gesundheitszustand',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          
           children: <Widget>[
-            _customRadioButton(Gesundheitszustand.gut, 'Gut', Colors.green),
-            _customRadioButton(Gesundheitszustand.leichtReduziert, 'Leicht reduziert', Colors.orange),
-            _customRadioButton(Gesundheitszustand.reduziert, 'Reduziert', Colors.deepOrange),
-            _customRadioButton(Gesundheitszustand.schlecht, 'Schlecht', Colors.red),
+            _customRadioButton(Gesundheitszustand.gut, Colors.green),
+            Text('Gut', style: TextStyle(color: Colors.green)),
+            
+          ],
+        ),
+        Row(
+          
+          children: <Widget>[
+            _customRadioButton(Gesundheitszustand.leichtReduziert, Colors.orange),
+            Text('Leicht reduziert', style: TextStyle(color: Colors.orange)),
+            
+          ],
+        ),
+        Row(
+          
+          children: <Widget>[
+            _customRadioButton(Gesundheitszustand.reduziert, Colors.deepOrange),
+            Text('Reduziert', style: TextStyle(color: Colors.deepOrange)),
+            
+          ],
+        ),
+        Row(
+          
+          children: <Widget>[
+            _customRadioButton(Gesundheitszustand.schlecht, Colors.red),
+            Text('Schlecht', style: TextStyle(color: Colors.red)),
           ],
         ),
       ],
@@ -346,7 +388,7 @@ Card(
     );
     
   }
- Widget _customRadioButton(Gesundheitszustand value, String text, Color color) {
+ Widget _customRadioButton(Gesundheitszustand value,  Color color) {
   return Row(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
@@ -362,10 +404,7 @@ Card(
         },
         activeColor: color, // Farbe des Radio-Buttons, wenn er ausgewählt ist
       ),
-      Text(
-        text,
-        style: TextStyle(color: color), // Farbe des Textes
-      ),
+      
     ],
   );
 }
