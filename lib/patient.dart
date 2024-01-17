@@ -1,8 +1,10 @@
 class Patient {
   final int id;
-  final String name;
+  final String vorname;
+  final String nachname;
+  final String ? gechlecht ;
   final DateTime geburtsdatum;
-  bool aktuellerGesundheitszustand;
+  bool entlassen;
   int zimmerNummer;
   List<String> diagnosen;
   bool MRT;
@@ -12,17 +14,21 @@ class Patient {
   List<String> mrts;
   Map<String, List<String>> mrtBilder = {};
   Map<String, double> kbbErgebnisse = {}; // Map für KBB-Ergebnisse
-
+  Map<DateTime, String> krankenverlauf = {};
+   Gesundheitszustand gesundheitszustand; // Hinzugefügtes Feld für Gesundheitszustand
   Patient({
     required this.id,
-    required this.name,
+    required this.vorname,
+     required this.nachname ,
     required this.geburtsdatum,
-    this.aktuellerGesundheitszustand = false,
+    required this.gechlecht,
+    this.entlassen = false,
     this.MRT = false,
     this.blutuntersuchung = false,
     this.mrtfertig=false,
     this.blutfertig=false,
     required this.zimmerNummer,
+    this.gesundheitszustand = Gesundheitszustand.nicht,
     List<String>? initialDiagnosen,
     List<String>? initialMRTs,
   }) : diagnosen = initialDiagnosen ?? [],
@@ -56,4 +62,22 @@ class Patient {
   Map<String, double> getKBBErgebnisse() {
     return kbbErgebnisse;
   }
+
+
+void addKrankenverlaufEintrag(String beschreibung) {
+    krankenverlauf[DateTime.now()] = beschreibung;
+  }
+void setGesundheitszustand(Gesundheitszustand neuerZustand) {
+  gesundheitszustand = neuerZustand;
 }
+Gesundheitszustand getGesundheitszustand() {
+  return gesundheitszustand;
+}
+
+
+
+
+
+
+}
+enum Gesundheitszustand { gut, leichtReduziert, reduziert, schlecht,nicht }
