@@ -44,16 +44,16 @@ class _ArztDashboardState extends State<ArztDashboard> {
                   cardColor = const Color.fromARGB(255, 222, 33, 243);
                   statusText = 'Ergebnisse bereit';
                 }
-                if(patient.gesundheitszustand==Gesundheitszustand.gut){
+               else if(patient.gesundheitszustand==Gesundheitszustand.gut){
                     cardColor =  Color.fromRGBO(22, 148, 27, 1);
                   statusText = 'Gesundheitzustand GUT';
-                } if(patient.gesundheitszustand==Gesundheitszustand.schlecht){
+                } else if(patient.gesundheitszustand==Gesundheitszustand.schlecht){
                     cardColor =  Colors.red;
                   statusText = 'Gesundheitzustand schlecht';
-                } if(patient.gesundheitszustand==Gesundheitszustand.reduziert){
+                }else if(patient.gesundheitszustand==Gesundheitszustand.reduziert){
                     cardColor = Colors.deepOrange;
                   statusText = 'Gesundheitzustand reduziert';
-                }if(patient.gesundheitszustand==Gesundheitszustand.leichtReduziert){
+                }else if(patient.gesundheitszustand==Gesundheitszustand.leichtReduziert){
                     cardColor = Colors.orange;
                   statusText = 'Gesundheitzustand leichtReduziert';
                 }

@@ -49,7 +49,28 @@ setState(() {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return WillPopScope(
+     
+    onWillPop: () async {
+      // Dialog anzeigen, wenn versucht wird, zurückzugehen
+      return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Warnung'),
+          content: Text('auf fertig drücken ,wenn alles gespeichert '),
+          actions: <Widget>[
+            // Schließen-Button
+            TextButton(
+              child: Text('Schließen'),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Dialog schließen und nicht zurückgehen
+              },
+            ),
+          ],
+        ),
+      ) ?? false; // Verhindert das Zurückgehen, falls der Dialog abgebrochen wird
+    },
+    child: Scaffold(
       appBar: AppBar(
         title: Text("MRT-Details für ${widget.patient.vorname}"),
         backgroundColor: Colors.blue,
@@ -197,6 +218,6 @@ Padding(
           ],
         ),
       ),
-    );
+    ),);
   }
 }

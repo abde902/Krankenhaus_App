@@ -2,6 +2,7 @@
 import 'zimmer.dart';
 import 'patient.dart';
 
+// Stellen Sie sicher, dass dieser Import-Pfad korrekt ist.
 class DatenVerwaltung {
   static final DatenVerwaltung _singleton = DatenVerwaltung._internal();
 

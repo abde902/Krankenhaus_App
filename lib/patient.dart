@@ -15,7 +15,9 @@ class Patient {
   Map<String, List<String>> mrtBilder = {};
   Map<String, double> kbbErgebnisse = {}; // Map für KBB-Ergebnisse
   Map<DateTime, String> krankenverlauf = {};
-   Gesundheitszustand gesundheitszustand; // Hinzugefügtes Feld für Gesundheitszustand
+  Gesundheitszustand gesundheitszustand; 
+  Map<DateTime, Map<String, double>> alteKbbErgebnisse = {};
+  Map<DateTime, Map<String, List<String>>> alteMrtBilder = {};
   Patient({
     required this.id,
     required this.vorname,
@@ -73,7 +75,21 @@ void setGesundheitszustand(Gesundheitszustand neuerZustand) {
 Gesundheitszustand getGesundheitszustand() {
   return gesundheitszustand;
 }
+ // Methode zum Speichern alter KBB-Ergebnisse
+  void archiviereKbbErgebnisse() {
+    if (kbbErgebnisse.isNotEmpty) {
+      alteKbbErgebnisse[DateTime.now()] = Map.from(kbbErgebnisse);
+      kbbErgebnisse.clear();
+    }
+  }
 
+  // Methode zum Speichern alter MRT-Bilder
+  void archiviereMrtBilder() {
+    if (mrtBilder.isNotEmpty) {
+      alteMrtBilder[DateTime.now()] = Map.from(mrtBilder);
+      mrtBilder.clear();
+    }
+  }
 
 
 
