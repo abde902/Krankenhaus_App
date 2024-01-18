@@ -1,0 +1,1 @@
+ C:\\hospital\\.dart_tool\\flutter_build\\93cc60e1c7f3082023db8092fb295606\\native_assets.yaml: 

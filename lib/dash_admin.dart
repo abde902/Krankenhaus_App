@@ -97,7 +97,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     context: context,
     builder: (BuildContext context) {
       // Initialisierung der Variablen und Controller
-      String ausgewahltesGeschlecht = 'Mändlich'; 
+      String ausgewahltesGeschlecht =''; 
       TextEditingController vornameController = TextEditingController();
       TextEditingController nachnameController = TextEditingController();
       TextEditingController geburtsdatumController = TextEditingController();
@@ -159,9 +159,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
               ),
             ),
             actions: <Widget>[
+             
               TextButton(
                 child: Text('Aufnehmen'),
                 onPressed: () {
+                   if(ausgewahltesGeschlecht.isNotEmpty){
                   // Patientenerstellung und Hinzufügen zur Liste
                   int neueId = daten.patientenListe.length + 1;
                   Patient neuerPatient = Patient(
@@ -177,7 +179,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     daten.zimmerListe[zimmerNummer - 1].istBelegt = true;
                   });
                   Navigator.of(context).pop();
-                },
+                }
+                else{ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Zuesrt alles ausfüllen ')));
+                       
+                };},
               ),
             ],
           );

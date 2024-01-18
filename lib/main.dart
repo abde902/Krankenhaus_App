@@ -2,12 +2,43 @@ import 'package:flutter/material.dart';
 import 'dash_arzt.dart';
 import 'dash_labor.dart';
 import 'dash_admin.dart';
+import 'daten_patient.dart'; // Stellen Sie sicher, dass dieser Import korrekt ist
+
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.paused) {
+      try {
+        await DatenVerwaltung().writeData();
+        print("Daten erfolgreich gespeichert.");
+      } catch (e) {
+        print("Fehler beim Speichern der Daten: $e");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +60,13 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   void navigateToArztDashboard() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ArztDashboard()));
   }
@@ -49,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDashboard()));
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -77,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text('Arzt Dashboard'),
               ),
               const SizedBox(height: 60),
-               ElevatedButton(
+              ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary:Color.fromARGB(255, 94, 221, 101),
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -89,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: navigateToAdminDashboard,
                 child: const Text('Administrator Dashboard'),
               ),
-               const SizedBox(height:60),
+              const SizedBox(height:60),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Color.fromARGB(255, 94, 221, 101),
@@ -102,8 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: navigateToLabDashboard,
                 child: const Text('Labor Dashboard'),
               ),
-             
-             
             ],
           ),
         ),
@@ -111,11 +139,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-

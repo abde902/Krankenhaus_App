@@ -91,7 +91,29 @@ Gesundheitszustand getGesundheitszustand() {
     }
   }
 
-
+Map<String, dynamic> toJson() {
+  return {
+    'id': id,
+    'vorname': vorname,
+    'nachname': nachname,
+    'gechlecht': gechlecht,
+    'geburtsdatum': geburtsdatum.toIso8601String(),
+    'entlassen': entlassen,
+    'zimmerNummer': zimmerNummer,
+    'diagnosen': diagnosen,
+    'MRT': MRT,
+    'blutuntersuchung': blutuntersuchung,
+    'mrtfertig': mrtfertig,
+    'blutfertig': blutfertig,
+    'mrts': mrts,
+    'mrtBilder': mrtBilder,
+    'kbbErgebnisse': kbbErgebnisse,
+    'krankenverlauf': krankenverlauf.map((key, value) => MapEntry(key.toIso8601String(), value)),
+    'gesundheitszustand': gesundheitszustand.toString(),
+    'alteKbbErgebnisse': alteKbbErgebnisse.map((key, value) => MapEntry(key.toIso8601String(), value)),
+    'alteMrtBilder': alteMrtBilder.map((key, value) => MapEntry(key.toIso8601String(), value)),
+  };
+}
 
 
 
