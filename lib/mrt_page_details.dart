@@ -28,6 +28,8 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
     if (imageName.isNotEmpty && selectedMRTTyp.isNotEmpty) {
       setState(() {
         widget.patient.addMRTBild(selectedMRTTyp, imageName);
+        
+
         imageName = ''; // Bildname zurücksetzen nach dem Hinzufügen
       });
     }

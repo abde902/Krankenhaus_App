@@ -23,8 +23,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   if (shouldNotify) {
     // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
-    showNotification();
-    daten.saveData();
+   // showNotification();
+    daten.saveDataToFile();
     super.dispose();
   }else
             super.dispose();

@@ -298,6 +298,7 @@ Card(
      _oeffneErgebnissePage();
       widget.patient.mrtfertig=false;
       widget.patient.blutfertig=false;
+        
     });
                  
                   

@@ -24,11 +24,12 @@ class _ArztDashboardState extends State<ArztDashboard> {
   if (shouldNotify) {
     // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
     showNotification();
-    daten.saveData();
+    daten.saveDataToFile();
     super.dispose();
-  }else { super.dispose();}
+  }else {     daten.saveDataToFile();
 
-             daten.saveData();
+    super.dispose();}
+
 
   }
       Future<void> showNotification() async {

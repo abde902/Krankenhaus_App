@@ -28,11 +28,14 @@ class _LabDashboardState extends State<LabDashboard> {
   if (shouldNotify) {
     // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
     showNotification();
-        daten.saveData();
-
+    daten.saveDataToFile();
     super.dispose();
-  }else
+  }else{
+    daten.saveDataToFile();
+
             super.dispose();
+
+  }
 
   }
       Future<void> showNotification() async {

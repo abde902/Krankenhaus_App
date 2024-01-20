@@ -1,9 +1,9 @@
 
 import 'zimmer.dart';
 import 'patient.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 class DatenVerwaltung {
   static final DatenVerwaltung _singleton = DatenVerwaltung._internal();
   factory DatenVerwaltung() {
@@ -14,27 +14,36 @@ class DatenVerwaltung {
   List<Zimmer> zimmerListe = List.generate(20, (index) => Zimmer(nummer: index + 1));
   List<Patient> patientenListe = [];
 
- Future<void> saveData() async {
-    final prefs = await SharedPreferences.getInstance();
 
-    String zimmerListeJson = jsonEncode(zimmerListe.map((z) => z.toJson()).toList());
-    await prefs.setString('zimmerListe', zimmerListeJson);
-    print('Saved ZimmerListe: $zimmerListeJson'); // Print the saved zimmerListe
+   Future<File> _getLocalFile(String filename) async {
+    final directory = await getApplicationDocumentsDirectory();
+    return File('${directory.path}/$filename');
+  }
 
-    String patientenListeJson = jsonEncode(patientenListe.map((p) => p.toJson()).toList());
-    await prefs.setString('patientenListe', patientenListeJson);
-      print('Saved PatientenListe: $patientenListeJson'); // Print the saved patientenListe
- }
+  Future<void> saveDataToFile() async {
+    final file = await _getLocalFile('data.json');
 
-  Future<void> loadData() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<dynamic> zimmerJson = jsonDecode(prefs.getString('zimmerListe') ?? '[]');
-    List<dynamic> patientenJson = jsonDecode(prefs.getString('patientenListe') ?? '[]');
+    Map<String, dynamic> data = {
+      'zimmerListe': zimmerListe.map((z) => z.toJson()).toList(),
+      'patientenListe': patientenListe.map((p) => p.toJson()).toList(),
+    };
 
-    zimmerListe = zimmerJson.map((z) => Zimmer.fromJson(z)).toList();
-    patientenListe = patientenJson.map((p) => Patient.fromJson(p)).toList();
+    await file.writeAsString(jsonEncode(data)); 
   }
   
+  Future<void> loadDataFromFile() async {
+    try {
+      final file = await _getLocalFile('data.json');
+      final contents = await file.readAsString();
+      final data = jsonDecode(contents) as Map<String, dynamic>;
+
+      zimmerListe = List<Zimmer>.from(data['zimmerListe'].map((z) => Zimmer.fromJson(z)));
+      patientenListe = List<Patient>.from(data['patientenListe'].map((p) => Patient.fromJson(p)));
+    } catch (e) {
+      // Handle error, e.g., file not found
+    }
+  }
+
 
   
  

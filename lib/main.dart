@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hospital/daten_patient.dart';
 import 'dash_arzt.dart';
 import 'dash_labor.dart';
 import 'dash_admin.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final DatenVerwaltung daten = DatenVerwaltung();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  await daten.loadData();
+    await daten.loadDataFromFile();
+
   
   runApp(DevicePreview(
     builder: (context) => MyApp(), // Wrap your app
@@ -44,8 +42,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state)async {
     if (state == AppLifecycleState.paused||state==AppLifecycleState.inactive) {
-      await daten.saveData();
-    }
+       daten.saveDataToFile();    }
   }
   @override
   Widget build(BuildContext context) {
