@@ -28,6 +28,8 @@ class _LabDashboardState extends State<LabDashboard> {
   if (shouldNotify) {
     // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
     showNotification();
+        daten.saveData();
+
     super.dispose();
   }else
             super.dispose();

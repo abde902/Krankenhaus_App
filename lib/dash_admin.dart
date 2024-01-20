@@ -3,6 +3,9 @@ import 'package:intl/intl.dart';
 import 'patient.dart';
 import 'daten_patient.dart'; // Stellen Sie sicher, dass diese Datei alle benötigten Informationen enthält.
 import 'zimmer.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 enum ZimmerStatus { frei, belegt, entlassen }
 class AdminDashboard extends StatefulWidget {
   @override
@@ -12,6 +15,43 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   final daten = DatenVerwaltung();
   ZimmerStatus? _selectedFilter;
+  @override
+  void dispose() {
+    // Benachrichtigung anzeigen, wenn der Benutzer das Dashboard verlässt
+  // Prüfen, ob ein Patient eine abgeschlossene MRT oder Blutuntersuchung hat
+  bool shouldNotify = daten.patientenListe.isNotEmpty;
+
+  if (shouldNotify) {
+    // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
+    showNotification();
+    daten.saveData();
+    super.dispose();
+  }else
+            super.dispose();
+
+  }
+      Future<void> showNotification() async {
+        if (!mounted) return;
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          '122', 
+          'abde', 
+          channelDescription: 'nn',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: false,
+        );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0, 
+      'Für labor', 
+      'Neu TEST ', 
+      platformChannelSpecifics,
+    );
+  }
   @override
   Widget build(BuildContext context) {
      List<Zimmer> gefilterteListe = _filterZimmer();
