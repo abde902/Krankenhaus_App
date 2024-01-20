@@ -3,6 +3,9 @@ import 'package:intl/intl.dart';
 import 'patient.dart';
 import 'daten_patient.dart'; // Stellen Sie sicher, dass diese Datei alle benötigten Informationen enthält.
 import 'zimmer.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 enum ZimmerStatus { frei, belegt, entlassen }
 class AdminDashboard extends StatefulWidget {
   @override
@@ -12,6 +15,43 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   final daten = DatenVerwaltung();
   ZimmerStatus? _selectedFilter;
+  @override
+  void dispose() {
+    // Benachrichtigung anzeigen, wenn der Benutzer das Dashboard verlässt
+  // Prüfen, ob ein Patient eine abgeschlossene MRT oder Blutuntersuchung hat
+  bool shouldNotify = daten.patientenListe.isNotEmpty;
+
+  if (shouldNotify) {
+    // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
+   // showNotification();
+    daten.saveDataToFile();
+    super.dispose();
+  }else
+            super.dispose();
+
+  }
+      Future<void> showNotification() async {
+        if (!mounted) return;
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          '122', 
+          'abde', 
+          channelDescription: 'nn',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: false,
+        );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0, 
+      'Für labor', 
+      'Neu TEST ', 
+      platformChannelSpecifics,
+    );
+  }
   @override
   Widget build(BuildContext context) {
      List<Zimmer> gefilterteListe = _filterZimmer();
@@ -97,7 +137,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     context: context,
     builder: (BuildContext context) {
       // Initialisierung der Variablen und Controller
-      String ausgewahltesGeschlecht = 'Mändlich'; 
+      String ausgewahltesGeschlecht =''; 
       TextEditingController vornameController = TextEditingController();
       TextEditingController nachnameController = TextEditingController();
       TextEditingController geburtsdatumController = TextEditingController();
@@ -159,9 +199,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
               ),
             ),
             actions: <Widget>[
+             
               TextButton(
                 child: Text('Aufnehmen'),
                 onPressed: () {
+                   if(ausgewahltesGeschlecht.isNotEmpty){
                   // Patientenerstellung und Hinzufügen zur Liste
                   int neueId = daten.patientenListe.length + 1;
                   Patient neuerPatient = Patient(
@@ -177,7 +219,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     daten.zimmerListe[zimmerNummer - 1].istBelegt = true;
                   });
                   Navigator.of(context).pop();
-                },
+                }
+                else{ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Zuesrt alles ausfüllen ')));
+                       
+                };},
               ),
             ],
           );

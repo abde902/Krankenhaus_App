@@ -3,6 +3,9 @@ import 'package:intl/intl.dart';
 import 'patient_detail_screen.dart';
 import 'daten_patient.dart';
 import 'patient.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 class ArztDashboard extends StatefulWidget {
   @override
@@ -11,12 +14,51 @@ class ArztDashboard extends StatefulWidget {
 
 class _ArztDashboardState extends State<ArztDashboard> {
   final daten = DatenVerwaltung();
+  
+@override
+  void dispose() {
+    // Benachrichtigung anzeigen, wenn der Benutzer das Dashboard verlässt
+  // Prüfen, ob ein Patient eine abgeschlossene MRT oder Blutuntersuchung hat
+  bool shouldNotify = daten.patientenListe.any((patient) =>(!((patient.MRT&& patient.mrtfertig) && (patient.blutuntersuchung  && patient.blutfertig))&&!((patient.MRT&& patient.mrtfertig&&!patient.blutuntersuchung) || (patient.blutuntersuchung  && patient.blutfertig&&!patient.MRT))&&(patient.MRT||patient.blutuntersuchung)));
 
+  if (shouldNotify) {
+    // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
+    showNotification();
+    daten.saveDataToFile();
+    super.dispose();
+  }else {     daten.saveDataToFile();
+
+    super.dispose();}
+
+
+  }
+      Future<void> showNotification() async {
+        if (!mounted) return;
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          '122', 
+          'abde', 
+          channelDescription: 'nn',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: false,
+        );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0, 
+      'Für labor', 
+      'Neu TEST ', 
+      platformChannelSpecifics,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<Patient> patientenListe = daten.patientenListe;
 
+        List<Patient> patientenListe = daten.patientenListe;
 
 
     return Scaffold(
@@ -34,12 +76,13 @@ class _ArztDashboardState extends State<ArztDashboard> {
 
                 Color cardColor = Colors.white; // Standardfarbe
                 String statusText = '';
-
+                bool ergebnis_1=(patient.MRT&& patient.mrtfertig) && (patient.blutuntersuchung  && patient.blutfertig);
+                bool ergebnis_2=(patient.MRT&& patient.mrtfertig&&!patient.blutuntersuchung) || (patient.blutuntersuchung  && patient.blutfertig&&!patient.MRT);
                 // Prüfen Sie den Status der Untersuchungen und passen Sie die Farbe und den Text entsprechend an
-                if ((patient.MRT&& patient.mrtfertig) && (patient.blutuntersuchung  && patient.blutfertig)) {
+                if (ergebnis_1) {
                   cardColor =  const Color.fromARGB(255, 222, 33, 243);
                   statusText = 'Ergebnisse bereit';
-                } else if ((patient.MRT&& patient.mrtfertig&&!patient.blutuntersuchung) || (patient.blutuntersuchung  && patient.blutfertig&&!patient.MRT))  {
+                } else if (ergebnis_2)  {
 
                   cardColor = const Color.fromARGB(255, 222, 33, 243);
                   statusText = 'Ergebnisse bereit';

@@ -48,7 +48,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Krankenverlauf'),
+        title: Text('Krankheitverlauf'),
         content: SingleChildScrollView(
           child: ListBody(
             children: patient.krankenverlauf.entries
@@ -168,7 +168,7 @@ void _oeffneAlteErgebnissePage() {
       ),
       ElevatedButton(
             onPressed: () => _showKrankenverlaufDialog(context, widget.patient),
-            child: Text('Krankenverlauf anzeigen'),
+            child: Text('Krankheitverlauf anzeigen'),
           ),
     ],
   ),
@@ -298,6 +298,7 @@ Card(
      _oeffneErgebnissePage();
       widget.patient.mrtfertig=false;
       widget.patient.blutfertig=false;
+        
     });
                  
                   

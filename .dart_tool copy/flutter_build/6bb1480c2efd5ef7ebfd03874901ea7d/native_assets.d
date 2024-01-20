@@ -1,0 +1,1 @@
+ C:\\Users\\stita\\OneDrive\\Desktop\\ws2023\\HCI\\hospital\\.dart_tool\\flutter_build\\6bb1480c2efd5ef7ebfd03874901ea7d\\native_assets.yaml: 

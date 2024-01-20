@@ -52,7 +52,7 @@ class Patient {
   }
     bool hatMRTBilder() {
     // Überprüfen, ob die Map mrtBilder irgendwelche Einträge hat
-    return mrtBilder.values.any((bilderListe) => bilderListe.isNotEmpty);
+    return mrtBilder.values.any((bilderListe) => bilderListe.isEmpty);
   }
 
   // Methode zum Hinzufügen von KBB-Ergebnissen
@@ -90,7 +90,55 @@ Gesundheitszustand getGesundheitszustand() {
       mrtBilder.clear();
     }
   }
+// Convert a Patient object to a Map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'vorname': vorname,
+      'nachname': nachname,
+      'geschlecht': gechlecht,
+      'geburtsdatum': geburtsdatum.toIso8601String(),
+      'entlassen': entlassen,
+      'zimmerNummer': zimmerNummer,
+      'diagnosen': diagnosen,
+      'MRT': MRT,
+      'blutuntersuchung': blutuntersuchung,
+      'mrtfertig': mrtfertig,
+      'blutfertig': blutfertig,
+      'mrts': mrts,
+      'mrtBilder': mrtBilder,
+      'kbbErgebnisse': kbbErgebnisse,
+      'krankenverlauf': krankenverlauf.map((key, value) => MapEntry(key.toIso8601String(), value)),
+      'gesundheitszustand': gesundheitszustand.index,
+      'alteKbbErgebnisse': alteKbbErgebnisse.map((key, value) => MapEntry(key.toIso8601String(), value)),
+      'alteMrtBilder': alteMrtBilder.map((key, value) => MapEntry(key.toIso8601String(), value)),
+    };
+  }
 
+  // Create a Patient object from a Map
+factory Patient.fromJson(Map<String, dynamic> json) {
+    return Patient(
+      id: json['id'],
+      vorname: json['vorname'],
+      nachname: json['nachname'],
+      gechlecht: json['geschlecht'],
+      geburtsdatum: DateTime.parse(json['geburtsdatum']),
+      entlassen: json['entlassen'],
+      zimmerNummer: json['zimmerNummer'],
+      MRT: json['MRT'],
+      blutuntersuchung: json['blutuntersuchung'],
+      mrtfertig: json['mrtfertig'],
+      blutfertig: json['blutfertig'],
+      gesundheitszustand: Gesundheitszustand.values[json['gesundheitszustand']],
+      initialDiagnosen: List<String>.from(json['diagnosen']),
+      initialMRTs: List<String>.from(json['mrts']),
+    )
+    ..mrtBilder = (json['mrtBilder'] as Map<String, dynamic>).map((key, value) => MapEntry(key, List<String>.from(value)))
+    ..kbbErgebnisse = Map<String, double>.from(json['kbbErgebnisse'])
+    ..krankenverlauf = (json['krankenverlauf'] as Map<String, dynamic>).map((key, value) => MapEntry(DateTime.parse(key), value))
+    ..alteKbbErgebnisse = (json['alteKbbErgebnisse'] as Map<String, dynamic>).map((key, value) => MapEntry(DateTime.parse(key), Map<String, double>.from(value)))
+    ..alteMrtBilder = (json['alteMrtBilder'] as Map<String, dynamic>).map((key, value) => MapEntry(DateTime.parse(key), (value as Map<String, dynamic>).map((k, v) => MapEntry(k, List<String>.from(v)))));
+  }
 
 
 

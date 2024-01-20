@@ -1,0 +1,140 @@
+{
+   "checksum": "b1beb1c4430c9c47efd0324c1513280a",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13326813190648969",
+            "date_last_used": "0",
+            "guid": "f7fc68d8-7ea9-4749-a920-717b62442cdb",
+            "id": "37",
+            "name": "Amazon.de – online einkaufen",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "http://www.amazon.de/gp/bit/amazonbookmark.html?tag=hp2-brobookmark-de-21&partner=HP"
+         }, {
+            "date_added": "13326813190648969",
+            "date_last_used": "0",
+            "guid": "0014c0cd-a420-436e-9c70-0aa3c15b48a7",
+            "id": "38",
+            "name": "Booking.com",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "http://secure.rezserver.com/sdk/v1/LinkFwd?refid=7684&destination=booking&refclickid=webslice1819"
+         }, {
+            "date_added": "13349474616136972",
+            "date_last_used": "0",
+            "guid": "17e71366-a412-4527-824e-0d27ea09627f",
+            "id": "10",
+            "name": "Booking.com",
+            "show_icon": false,
+            "source": "oem_preload",
+            "type": "url",
+            "url": "https://www.booking.com/index.html?aid=1980379&label=edge2020"
+         }, {
+            "date_added": "13349474616136835",
+            "date_last_used": "0",
+            "guid": "1568186a-78f9-4dd4-a6f7-af069e171149",
+            "id": "9",
+            "name": "Express VPN",
+            "show_icon": false,
+            "source": "oem_preload",
+            "type": "url",
+            "url": "http://js.redirect.hp.com/jumpstation?bd=expressvpn&c=*&locale=en_us&pf=*&s=*&tp=edge"
+         }, {
+            "date_added": "13349474616136634",
+            "date_last_used": "0",
+            "guid": "80a38ec7-9462-4909-bc20-9a3172d4ddb3",
+            "id": "8",
+            "name": "Amazon.de – online einkaufen",
+            "show_icon": false,
+            "source": "oem_preload",
+            "type": "url",
+            "url": "http://js.redirect.hp.com/jumpstation?bd=amazon&c=*&locale=de_de&pf=*&s=*&tp=edge"
+         }, {
+            "date_added": "13349474616136076",
+            "date_last_used": "0",
+            "guid": "207ffe19-e129-42c3-b08f-b3a9aad727f5",
+            "id": "7",
+            "name": "LastPass password manager",
+            "show_icon": false,
+            "source": "oem_preload",
+            "type": "url",
+            "url": "http://js.redirect.hp.com/jumpstation?bd=lastpass&c=*&locale=*&pf=*&s=*&tp=edge"
+         } ],
+         "date_added": "13349474615754285",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Favoritenleiste",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [ {
+            "children": [ {
+               "date_added": "13326813190633349",
+               "date_last_used": "0",
+               "guid": "d13857a1-9476-4631-9cce-ee85f80a6428",
+               "id": "34",
+               "name": "Amazon.de – online einkaufen",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://www.amazon.de/gp/bit/amazonbookmark.html?tag=hp2-brobookmark-de-21&partner=HP"
+            }, {
+               "date_added": "13326813190648969",
+               "date_last_used": "0",
+               "guid": "70ccf5b5-66d4-4b94-92f8-aeaf353e1bfd",
+               "id": "35",
+               "name": "Booking.com",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://secure.rezserver.com/sdk/v1/LinkFwd?refid=7684&destination=booking&refclickid=iefav1819"
+            }, {
+               "date_added": "13326813190696075",
+               "date_last_used": "0",
+               "guid": "d80084b2-0ed9-4ace-9f86-f2c3bf0dd352",
+               "id": "36",
+               "name": "HP Store",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://js.redirect.hp.com/jumpstation?bd=*&c=*&locale=de_de&pf=*&s=Hpstore&tp=*&TYPE=3"
+            } ],
+            "date_added": "13349474620077980",
+            "date_last_used": "0",
+            "date_modified": "0",
+            "guid": "2bf41e5b-1f43-44da-97a4-efee9d544ad9",
+            "id": "33",
+            "name": "HP",
+            "source": "import_fre",
+            "type": "folder"
+         } ],
+         "date_added": "13349474615754288",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Weitere Favoriten",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13349474615754290",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile Favoriten",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "sync_metadata": "CkEKHgiIgQISCCbJPRmNAQAAKg4QABgAIAAoBTAAOABAABIAIAEqGDN0a3hCL3VCMXJTdVZvaHh2aE5nTHc9PaAGDBKJAQgDEoQBChxuamdEdTg4ZUNydlhwODZwRDdmSEdjcUZwODg9EiQ5M2UwNTk1Yi0zYzJhLTU5MTgtYmFkMi0xZjdlMDE3ZGRiZjEYACAAKAAwj7aImvswOI25iJr7MECNuYia+zBKHHl6TkIwMWNuNTRBN2NSVTB1VCsvUGdtVHRVbz1aAGUAAAAAEqcBCCUSogEKHGl2S3FES3d1d205VVpsRFdjNGcrbXhUZ01Iaz0SJGY3ZmM2OGQ4LTdlYTktNDc0OS1hOTIwLTcxN2I2MjQ0MmNkYhgAIAAoADDarb+a+zA4l66/mvswQJeuv5r7MEocTGZ5WFA5WElHY3hXY0NyM0ZwM0Rxd04wQWk4PVoeIhwya0ZOT08xVXEvTm05dzRWdTBFYVV3V0hhSm89ZQAAAAASqAEIJBKjAQocMnoxS3RMUFRjRVJxM0J5WFlKdjY3S2tBdkVNPRIkZDgwMDg0YjItMGVkOS00YWNlLTlmODYtZjJjM2JmMGRkMzUyGAAgACgAMN6tv5r7MDiEr7+a+zBAhK+/mvswShxrdmlaRGVReThEK25VRXdUV1RKb21xZ2loUlE9Wh8iHdVQUUtuSGlXZUxkMXNMZ3ZPZmVpY2hXY291YTA9ZQAAAAASpwEIIRKiAQocMC9SSGUxU1FnWEdNQklFby9VdW9nUjRoREZRPRIkMmJmNDFlNWItMWY0My00NGRhLTk3YTQtZWZlZTlkNTQ0YWQ5GAAgACgAMNutv5r7MDi3rr+a+zBAt66/mvswShx0M1V6MlE3TWxYMXhiZTV5R1VuOFBlYm83cW89Wh4iHDZvY2xEYkdZZEVBbWZzbFNBZkIwVFRSM3R0UT1lAAAAABKJAQgCEoQBChxZY1NUb252RVNQd3FDczRMMmNyVmh2NjhMOTg9EiQ0ZjFkYzQwNi1hZWMxLTU3NzktOTI0MC0zYzhmNTFjYThmYjAYACAAKAAwiraImvswOOu3iJr7MEDrt4ia+zBKHG9QVmtod0JSYlY2NUtDV1IyK0lPTkhXb091OD1aAGUAAAAAEqgBCCMSowEKHC9OMDVJU1FJYmVUSjRCR3pSd2Q1ZzU0K3VUYz0SJDcwY2NmNWI1LTY2ZDQtNGI5NC05MmY4LWFlYWYzNTNlMWJmZBgAIAAoADDdrb+a+zA46a6/mvswQOmuv5r7MEocVTRiRHp5YkplTHpYL2NSaHlnYzY2KzU1czAwPVofIh2qSms2SHNuSEpLZUpiTGFkWUpqYnplTFFqL2Z3PWUAAAAAEqcBCCYSogEKHExqQnlFRVNWUGM0cTdJeVd2MWxrWTFBa0lCUT0SJDAwMTRjMGNkLWE0MjAtNDM2ZS05YzcwLTBhYTNjMTViNDhhNxgAIAAoADDfrb+a+zA4na+/mvswQJ2vv5r7MEocYmtrU2VjMnJYMDcvSzA2NkRYYVdiMDBxMEpZPVoeIhxRYUI0OE80QkxCR1pFbDMyeVBNNW1RK1dyOE09ZQAAAAASpwEIIhKiAQoceTQwOXJ4bkcxQTVFSitraXN3T2hRRXN6WGxvPRIkZDEzODU3YTEtOTQ3Ni00NjMxLTljY2UtZWU4NWY4MGE2NDI4GAAgACgAMNytv5r7MDjPrr+a+zBAz66/mvswShxtZjR3NHFERFZEWUk0K2N3MFBIUGI3dEs4M3M9Wh4iHFRrcHRJZHdnT1Q1ZjhvdDBCelFqT3RKcWFVaz1lAAAAABKJAQgBEoQBChx5eEovNmZ2a2VjcjdrcDVFUXpCNHRXTHBkYkU9EiRlMWMzNjU1Yy0yMDk3LTU1YzQtOTJiOC03NjZkYmJiOGRjN2YYACAAKAAwibaImvswOM23iJr7MEDNt4ia+zBKHGFSQ1dMZ2hGOWI1SW5xS0lEdnVKL2p2UWtGYz1aAGUAAAAAMAA4AA==",
+   "version": 1
+}

@@ -1,18 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:hospital/daten_patient.dart';
 import 'dash_arzt.dart';
 import 'dash_labor.dart';
 import 'dash_admin.dart';
-void main() {
-  runApp(const MyApp());
+import 'package:device_preview/device_preview.dart';
+
+final DatenVerwaltung daten = DatenVerwaltung();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+    await daten.loadDataFromFile();
+
+  
+  runApp(DevicePreview(
+    builder: (context) => MyApp(), // Wrap your app
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
+
+
+
+
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+ 
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state)async {
+    if (state == AppLifecycleState.paused||state==AppLifecycleState.inactive) {
+       daten.saveDataToFile();    }
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hospital App',
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      darkTheme: ThemeData.dark(),
+      title: 'krankenhaus App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color.fromARGB(255, 84, 149, 81),
@@ -29,14 +68,13 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   void navigateToArztDashboard() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ArztDashboard()));
   }
@@ -49,7 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDashboard()));
   }
 
-   @override
+  
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -66,8 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 60),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary:Color.fromARGB(255, 94, 221, 101),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  primary: Color.fromARGB(255, 94, 221, 101),
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -77,10 +117,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text('Arzt Dashboard'),
               ),
               const SizedBox(height: 60),
-               ElevatedButton(
+              ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary:Color.fromARGB(255, 94, 221, 101),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  primary: Color.fromARGB(255, 94, 221, 101),
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -89,11 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: navigateToAdminDashboard,
                 child: const Text('Administrator Dashboard'),
               ),
-               const SizedBox(height:60),
+              const SizedBox(height:60),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Color.fromARGB(255, 94, 221, 101),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -102,8 +142,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: navigateToLabDashboard,
                 child: const Text('Labor Dashboard'),
               ),
-             
-             
+              const SizedBox(height: 20),
+            
             ],
           ),
         ),
@@ -111,11 +151,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-

@@ -3,12 +3,10 @@ class Zimmer {
   bool istBelegt;
 
   Zimmer({required this.nummer,  this.istBelegt=false });
-
-
   Map<String, dynamic> toJson() {
     return {
       'nummer': nummer,
-      'istBelegt': istBelegt
+      'istBelegt': istBelegt,
     };
   }
 
@@ -18,6 +16,7 @@ class Zimmer {
       istBelegt: json['istBelegt'],
     );
   }
+
 
 
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'patient.dart'; // Ihre Patientenklasse
 import 'package:intl/intl.dart';
+
+
 class MRTDetailPage extends StatefulWidget {
   final Patient patient;
 
@@ -26,6 +28,8 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
     if (imageName.isNotEmpty && selectedMRTTyp.isNotEmpty) {
       setState(() {
         widget.patient.addMRTBild(selectedMRTTyp, imageName);
+        
+
         imageName = ''; // Bildname zurücksetzen nach dem Hinzufügen
       });
     }
@@ -37,7 +41,7 @@ setState(() {
 
   }
   void _markMRTAsComplete() {bool hatMRTBilder = widget.patient.hatMRTBilder();
-    if (hatMRTBilder) {
+    if (!hatMRTBilder) {
     setState(() {
       widget.patient.mrtfertig = true;
     });

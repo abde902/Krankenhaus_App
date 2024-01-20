@@ -3,6 +3,10 @@ import 'patient.dart'; // Stelle sicher, dass diese Datei die korrekte Patienten
 import 'daten_patient.dart'; // Stelle sicher, dass diese Datei alle benötigten Informationen enthält
 import 'blut_page_details.dart';
 import 'mrt_page_details.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
 enum LabTest { MRT, BlutBild }
 class LabDashboard extends StatefulWidget {
   @override
@@ -15,7 +19,45 @@ class _LabDashboardState extends State<LabDashboard> {
   final DatenVerwaltung daten = DatenVerwaltung();
   
   LabTest _selectedTest = LabTest.MRT; 
+@override
+  void dispose() {
+    // Benachrichtigung anzeigen, wenn der Benutzer das Dashboard verlässt
+  // Prüfen, ob ein Patient eine abgeschlossene MRT oder Blutuntersuchung hat
+  bool shouldNotify = daten.patientenListe.any((patient) =>(((patient.MRT&& patient.mrtfertig) && (patient.blutuntersuchung  && patient.blutfertig))||((patient.MRT&& patient.mrtfertig&&!patient.blutuntersuchung) || (patient.blutuntersuchung  && patient.blutfertig&&!patient.MRT))));
 
+  if (shouldNotify) {
+    // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
+    showNotification();
+    daten.saveDataToFile();
+    super.dispose();
+  }else{
+    daten.saveDataToFile();
+
+            super.dispose();
+
+  }
+
+  }
+      Future<void> showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          '1d22', 
+          'adbde', 
+          channelDescription: 'nnd',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: false,
+        );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+      0, 
+      'Für Arzt', 
+      'Neu Ergebniss ', 
+      platformChannelSpecifics,
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -75,6 +117,8 @@ class _LabDashboardState extends State<LabDashboard> {
           final patient = gefilterteListe[index];
         
           return Card(
+            elevation: 4.0,
+                  margin: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 7.0),
             child: ListTile(
               
               title:Text( 'Test ${index+1}'),
