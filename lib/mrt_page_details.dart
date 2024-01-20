@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'patient.dart'; // Ihre Patientenklasse
 import 'package:intl/intl.dart';
+
+
 class MRTDetailPage extends StatefulWidget {
   final Patient patient;
 
@@ -37,7 +39,7 @@ setState(() {
 
   }
   void _markMRTAsComplete() {bool hatMRTBilder = widget.patient.hatMRTBilder();
-    if (hatMRTBilder) {
+    if (!hatMRTBilder) {
     setState(() {
       widget.patient.mrtfertig = true;
     });

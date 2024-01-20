@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dash_arzt.dart';
 import 'dash_labor.dart';
 import 'dash_admin.dart';
-import 'daten_patient.dart'; // Stellen Sie sicher, dass dieser Import korrekt ist
+import 'package:device_preview/device_preview.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+
+  runApp(DevicePreview(
+    builder: (context) => MyApp(), // Wrap your app
+  ));
 }
+
+
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
@@ -17,33 +23,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.paused) {
-      try {
-        await DatenVerwaltung().writeData();
-        print("Daten erfolgreich gespeichert.");
-      } catch (e) {
-        print("Fehler beim Speichern der Daten: $e");
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Hospital App',
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      darkTheme: ThemeData.dark(),
+      title: 'krankenhaus App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color.fromARGB(255, 84, 149, 81),
@@ -79,6 +65,8 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDashboard()));
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,8 +84,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 60),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary:Color.fromARGB(255, 94, 221, 101),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  primary: Color.fromARGB(255, 94, 221, 101),
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -109,8 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 60),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary:Color.fromARGB(255, 94, 221, 101),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  primary: Color.fromARGB(255, 94, 221, 101),
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -123,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Color.fromARGB(255, 94, 221, 101),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -132,6 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: navigateToLabDashboard,
                 child: const Text('Labor Dashboard'),
               ),
+              const SizedBox(height: 20),
+            
             ],
           ),
         ),
