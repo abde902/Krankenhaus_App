@@ -15,6 +15,8 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   final daten = DatenVerwaltung();
   ZimmerStatus? _selectedFilter;
+  TextEditingController searchController = TextEditingController();
+   
   @override
   void dispose() {
     // Benachrichtigung anzeigen, wenn der Benutzer das Dashboard verlässt
@@ -55,6 +57,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
   @override
   Widget build(BuildContext context) {
      List<Zimmer> gefilterteListe = _filterZimmer();
+     void filterZimmerListe() {
+  setState(() {
+    gefilterteListe = daten.zimmerListe.where((zimmer) {
+      if (zimmer.istBelegt) {
+        var patient = daten.patientenListe.firstWhere(
+          (patient) => patient.zimmerNummer == zimmer.nummer);
+        return patient != 0 && patient.vorname.toLowerCase().contains(searchController.text.toLowerCase());
+      }
+      return false;
+    }).toList();
+  });
+};
 
   return Scaffold(
       appBar: AppBar(
@@ -84,6 +98,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }).toList(),
            
           ),
+          
         ],
       ),
       body: ListView.builder(

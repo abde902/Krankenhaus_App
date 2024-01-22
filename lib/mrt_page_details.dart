@@ -23,6 +23,14 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
       selectedMRTTyp = widget.patient.mrtBilder.keys.first;
     }
   }
+  bool bildBereitsGespeichert(String imgName) {
+  for (var bilderListe in widget.patient.mrtBilder.values) {
+    if (bilderListe.contains(imgName)) {
+      return true; // Bildname wurde in einer der Listen gefunden
+    }
+  }
+  return false; // Bildname wurde in keiner der Listen gefunden
+}
 
   void addImageToListAndShow() {
     if (selectedMRTTyp.isNotEmpty) {
@@ -53,10 +61,33 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return WillPopScope(
+     
+    onWillPop: () async {
+      // Dialog anzeigen, wenn versucht wird, zurückzugehen
+      return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Warnung'),
+          content: Text('auf fertig drücken ,wenn alles gespeichert '),
+          actions: <Widget>[
+            // Schließen-Button
+            TextButton(
+              child: Text('Schließen'),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Dialog schließen und nicht zurückgehen
+              },
+            ),
+          ],
+        ),
+      ) ?? false; // Verhindert das Zurückgehen, falls der Dialog abgebrochen wird
+    },
+    child: Scaffold(
       appBar: AppBar(
         title: Text("MRT-Details für ${widget.patient.vorname}"),
+        backgroundColor: Colors.blue,
       ),
+      
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -133,8 +164,9 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
                       if (istAusgewaehlt) {
                         ausgewaehlteBilder.remove(imgName);
                       } else {
+                        if(!bildBereitsGespeichert(imgName)){
                         ausgewaehlteBilder.add(imgName);
-                       istAusgewaehlt=true;
+                       istAusgewaehlt = true;}
                       }
                     });
                   },
@@ -147,7 +179,7 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
                           'assets/images/$imgName',
                           fit: BoxFit.cover,
                         ),
-                        if (istAusgewaehlt)
+                        if (istAusgewaehlt )
                           Align(
                             alignment: Alignment.topRight,
                             child: Icon(Icons.check_circle, color: Color.fromARGB(255, 77, 63, 177)),
@@ -174,6 +206,6 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );}
 }
