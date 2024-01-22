@@ -85,7 +85,7 @@ class AlteErgebnissePage extends StatelessWidget {
           onTap: () => _showFullImage(context, imgName),
           child: GridTile(
             child: Image.asset(
-              'assets/images/$imgName.jpg',
+              'assets/images/$imgName',
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Center(child: Text('Bild konnte nicht geladen werden.'));
@@ -94,7 +94,7 @@ class AlteErgebnissePage extends StatelessWidget {
             footer: GridTileBar(
               backgroundColor: Colors.black45,
               title: Text(
-                imgName,
+                mrtTyp,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -115,7 +115,7 @@ String _formatDateTime(DateTime dateTime) {
         ),
         body: Center(
           child: Image.asset(
-            'assets/images/$imgName.jpg',
+            'assets/images/$imgName',
             fit: BoxFit.contain,
           ),
         ),

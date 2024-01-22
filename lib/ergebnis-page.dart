@@ -138,7 +138,7 @@ return Scaffold(
               onTap: () => _showFullImage(context, imgName),
               child: GridTile(
                 child: Image.asset(
-                  'assets/images/$imgName.jpg',
+                  'assets/images/$imgName',
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Center(child: Text('Bild konnte nicht geladen werden.'));
@@ -146,8 +146,11 @@ return Scaffold(
                 ),
                 footer: GridTileBar(
                   backgroundColor: Colors.black45,
-                  title: Text(
-                    imgName,
+                  title: Text( 
+                    patient.mrtBilder.keys.firstWhere(
+      (k) => patient.mrtBilder[k]!.contains(imgName),
+      orElse: () => 'Unbekannt'
+    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
