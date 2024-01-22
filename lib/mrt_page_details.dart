@@ -31,11 +31,11 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
           widget.patient.addMRTBild(selectedMRTTyp, bild);
               
 
-        });
+        });if(ausgewaehlteBilder.isNotEmpty)ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(' gespeichert.')));
         ausgewaehlteBilder.clear();
         
       });
-      if(ausgewaehlteBilder.isNotEmpty)ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(' gespeichert.')));
+      
     }
   }
 
@@ -71,7 +71,7 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
                     title: Text('Nachname: ${widget.patient.nachname}', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   ListTile(
-                    leading: Icon(Icons.cake),
+                    leading: Icon(Icons.cake, color: Color.fromRGBO(64, 68, 193, 1)), 
                     title: Text('Geburtsdatum: ${DateFormat('yyyy-MM-dd').format(widget.patient.geburtsdatum)}', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
@@ -79,27 +79,39 @@ class _MRTDetailPageState extends State<MRTDetailPage> {
             ),
             // DropdownButton für MRT-Typen
             if (widget.patient.mrtBilder.isNotEmpty) ...[
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: selectedMRTTyp,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedMRTTyp = newValue!;
-                              ausgewaehlteBilder.clear();
-
-                      
-                    });
-                  },
-                  items: widget.patient.mrtBilder.keys.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
+             Padding(
+    padding: EdgeInsets.all(16.0),
+    child: Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Text(
+            'scannende Körperteil auswählen:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: DropdownButton<String>(
+            isExpanded: true,
+            value: selectedMRTTyp,
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedMRTTyp = newValue!;
+                ausgewaehlteBilder.clear();
+              });
+            },
+            items: widget.patient.mrtBilder.keys.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    ),
+  ),
             ],
             // GridView für Bildauswahl
             GridView.builder(
