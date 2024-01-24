@@ -40,6 +40,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   device_preview: ^1.1.0
   flutter_local_notifications: ^16.3.1+1
+  multi_language_json: ^1.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -98,4 +99,6 @@ flutter:
     
   - assets/images/
   - assets/icons/
+  - lang/de_DE.json
+  - lang/en_US.json
 

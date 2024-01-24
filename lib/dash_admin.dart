@@ -6,6 +6,7 @@ import 'zimmer.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
 enum ZimmerStatus { frei, belegt, entlassen }
 class AdminDashboard extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   final daten = DatenVerwaltung();
   ZimmerStatus? _selectedFilter;
+  TextEditingController searchController = TextEditingController();
+   
   @override
   void dispose() {
     // Benachrichtigung anzeigen, wenn der Benutzer das Dashboard verlässt
@@ -23,7 +26,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   if (shouldNotify) {
     // Benachrichtigung anzeigen, wenn die Bedingung erfüllt ist
-   // showNotification();
+    showNotification();
     daten.saveDataToFile();
     super.dispose();
   }else
@@ -35,9 +38,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-          '122', 
-          'abde', 
-          channelDescription: 'nn',
+          '12z2', 
+          'abghde', 
+          channelDescription: 'nnj',
           importance: Importance.max,
           priority: Priority.high,
           showWhen: false,
@@ -46,15 +49,16 @@ class _AdminDashboardState extends State<AdminDashboard> {
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.show(
-      0, 
-      'Für labor', 
-      'Neu TEST ', 
+      1, 
+      'Fürh labor', 
+      'Neu hTEST ', 
       platformChannelSpecifics,
     );
   }
   @override
   Widget build(BuildContext context) {
      List<Zimmer> gefilterteListe = _filterZimmer();
+     
 
   return Scaffold(
       appBar: AppBar(

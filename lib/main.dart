@@ -1,14 +1,18 @@
+
 import 'package:flutter/material.dart';
 import 'package:hospital/daten_patient.dart';
 import 'dash_arzt.dart';
 import 'dash_labor.dart';
 import 'dash_admin.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:multi_language_json/multi_language_json.dart';
 
 final DatenVerwaltung daten = DatenVerwaltung();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+ 
+
     await daten.loadDataFromFile();
 
   
