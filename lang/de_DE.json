@@ -1,0 +1,15 @@
+{
+    "home" : {
+      "title" : "Home",
+      "btn" : "klicke hier"
+    },
+    "dialog" : {
+      "title" : "andere die sprache :",
+      "btn_negative" : "abrechen"
+    },
+    "config" : {
+      "iso_code" : "DE",
+      "prefix" : "de_DE",
+      "title" : "Deutch"
+    }
+  }
