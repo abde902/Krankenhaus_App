@@ -1,4 +1,4 @@
-# HCI
+# Krankenhau
 
 ## Getting started
 
