@@ -1,4 +1,4 @@
-# Krankenhau
+# Krankenhaus
 
 ## Getting started
 
